@@ -43,7 +43,7 @@ export function LiquidMaterial({ material: type, amount, containerType, containe
       uniforms: {
         color: { value: new THREE.Color(material.color) },
         fillLevel: { value: 0 },
-        opacity: { value: 0.9 },
+        opacity: { value: 0.3 },
         modelMinY: { value: 0 },
         modelMaxY: { value: 1 }
       },

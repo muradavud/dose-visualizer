@@ -16,17 +16,17 @@ export function AmountInput({ value, onChange }: AmountInputProps) {
           type="number"
           value={value.value}
           onChange={(e) => onChange({ ...value, value: Number(e.target.value) })}
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2"
+          className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
           min="0"
           step="0.1"
         />
         <select
           value={value.unit}
           onChange={(e) => onChange({ ...value, unit: e.target.value as 'ml' | 'g' })}
-          className="w-20 rounded-md border border-gray-300 px-2 py-2"
+          className="w-20 rounded-md border border-gray-300 px-2 py-2 text-gray-900 bg-white"
         >
-          <option value="ml">ml</option>
-          <option value="g">g</option>
+          <option value="ml" className="text-gray-900">ml</option>
+          <option value="g" className="text-gray-900">g</option>
         </select>
       </div>
     </div>

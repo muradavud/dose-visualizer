@@ -15,10 +15,10 @@ export function MaterialSelect({ value, onChange }: MaterialSelectProps) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as Material)}
-        className="w-full rounded-md border border-gray-300 px-3 py-2"
+        className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
       >
         {Object.values(MATERIALS).map((material) => (
-          <option key={material.id} value={material.id}>
+          <option key={material.id} value={material.id} className="text-gray-900">
             {material.name}
           </option>
         ))}
