@@ -1,4 +1,5 @@
-import type { Amount, Material as MaterialType } from '@/types';
+import { CONTAINERS } from '@/constants/containers';
+import type { Amount, Material } from '@/types';
 import { useLoader } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
@@ -7,57 +8,81 @@ import { LiquidMaterial } from '../materials/LiquidMaterial';
 import { MarblesMaterial } from '../materials/MarblesMaterial';
 
 interface GlassProps {
-  material: MaterialType;
+  material: Material;
   amount: Amount;
 }
 
 export function Glass({ material, amount }: GlassProps) {
-  const gltf = useLoader(GLTFLoader, '/assets/models/glass_pokal_12oz_inside.glb');
-  const glassGeometryRef = useRef<THREE.BufferGeometry | null>(null);
+  const container = CONTAINERS.glass;
+  const glassModel = useLoader(GLTFLoader, container.modelPath);
+  const insideModel = useLoader(GLTFLoader, container.insideModelPath);
+  const insideGeometryRef = useRef<THREE.BufferGeometry | null>(null);
 
-  // Apply glass material to the model
+  // Apply glass material to the outer model
   useEffect(() => {
-    if (gltf.scene) {
-      const simpleMaterial = new THREE.MeshStandardMaterial({
-        roughness: 0.5,
-        metalness: 0.5,
-        color: '#ffffff',
-        opacity: 0.5,
+    if (glassModel.scene) {
+      const simpleMaterial = new THREE.MeshPhysicalMaterial({
+        roughness: 0.05,         // Slightly smoother
+        metalness: 0.1,          // Tiny bit of metallic for shine
+        transmission: 0.8,       // Slightly less transparent
+        thickness: 0.5,          // More thickness for better edges
         transparent: true,
+        opacity: 0.5,            // More visible
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        clearcoat: 0.1           // Add subtle shine
       });
 
-      gltf.scene.traverse((child) => {
+      glassModel.scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          glassGeometryRef.current = child.geometry;
           child.material = simpleMaterial;
           child.castShadow = false;
           child.receiveShadow = false;
         }
       });
     }
-  }, [gltf]);
+  }, [glassModel]);
+
+  // Get the geometry from the inside model
+  useEffect(() => {
+    if (insideModel.scene) {
+      insideModel.scene.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          insideGeometryRef.current = child.geometry;
+          
+          // Get the actual bounds of the geometry
+          child.geometry.computeBoundingBox();
+          const bounds = child.geometry.boundingBox;
+          console.log('Inside glass model bounds:', {
+            min: bounds.min,
+            max: bounds.max
+          });
+        }
+      });
+    }
+  }, [insideModel]);
 
   // Render appropriate material visualization
   const renderMaterial = () => {
-    if (!glassGeometryRef.current) return null;
+    if (!insideGeometryRef.current) return null;
 
     switch (material) {
       case 'water':
         return (
           <LiquidMaterial
-            type={material}
+            material={material}
             amount={amount}
             containerType="glass"
-            containerGeometry={glassGeometryRef.current}
+            containerGeometry={insideGeometryRef.current}
           />
         );
       case 'marbles':
         return (
           <MarblesMaterial
-            type={material}
+            material={material}
             amount={amount}
             containerType="glass"
-            containerGeometry={glassGeometryRef.current}
+            containerGeometry={insideGeometryRef.current}
           />
         );
       default:
@@ -68,7 +93,7 @@ export function Glass({ material, amount }: GlassProps) {
 
   return (
     <group>
-      <primitive object={gltf.scene} scale={100} />
+      <primitive object={glassModel.scene}  />
       {renderMaterial()}
     </group>
   );

@@ -1,23 +1,26 @@
-import type { Amount, Container as ContainerType, Material as MaterialType } from '@/types';
+import { MATERIALS } from '@/constants/materials';
+import type { Amount, Container as ContainerType, Material, MaterialType } from '@/types';
 import { Glass } from './containers/Glass';
 
 interface VisualizerProps {
   container: ContainerType;
-  material: MaterialType;
+  material: Material;
   amount: Amount;
 }
 
 export function Visualizer({ container, material, amount }: VisualizerProps) {
   // Function to determine if a material-container combination is valid
-  const isValidCombination = (container: ContainerType, material: MaterialType): boolean => {
-    // Add logic for valid combinations
-    // For example: marbles shouldn't go in spoons, etc.
+  const isValidCombination = (container: ContainerType, material: Material): boolean => {
+    const materialSpec = MATERIALS[material];
+    if (!materialSpec) return false;
+
+    // Add logic for valid combinations based on material type
     const validCombinations: Record<ContainerType, MaterialType[]> = {
-      glass: ['water'], // expand this as needed
-      spoon: ['water'], // expand this as needed
+      glass: ['liquid', 'marbles'], // glass can hold both liquid and marbles
+      spoon: ['liquid'], // spoon can only hold liquids
     };
 
-    return validCombinations[container]?.includes(material) ?? false;
+    return validCombinations[container]?.includes(materialSpec.type) ?? false;
   };
 
   // Render appropriate container-material combination
@@ -32,6 +35,7 @@ export function Visualizer({ container, material, amount }: VisualizerProps) {
         return <Glass material={material} amount={amount} />;
       case 'spoon':
         // return <Spoon material={material} amount={amount} />;
+        return null;
       default:
         console.warn(`Unknown container type: ${container}`);
         return null;

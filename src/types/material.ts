@@ -1,7 +1,9 @@
-export type MaterialType = 'water' | 'marbles';
+export type Material = 'water' | 'marbles';
+export type MaterialType = 'liquid' | 'marbles';
 
 export interface MaterialSpecs {
-  id: MaterialType;
+  id: Material;
+  type: MaterialType;
   name: string;
   density: number; // g/ml
   color: string;
@@ -9,7 +11,6 @@ export interface MaterialSpecs {
   particleSize?: number; // For discrete materials, in mm
 }
 
-export type Material = MaterialType;
 
 export interface Amount {
   value: number;

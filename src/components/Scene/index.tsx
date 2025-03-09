@@ -1,13 +1,13 @@
 'use client';
 
-import type { Amount, Container as ContainerType, Material as MaterialType } from '@/types';
+import type { Amount, Container as ContainerType, Material } from '@/types';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Visualizer } from './Visualizer';
 
 interface SceneProps {
   container: ContainerType;
-  material: MaterialType;
+  material: Material;
   amount: Amount;
 }
 
@@ -15,7 +15,10 @@ export function Scene({ container, material, amount }: SceneProps) {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       <Canvas
-        camera={{ position: [0, 20, 50], fov: 50 }}
+        camera={{
+          position: [0.4, 0.3, 0],
+          fov: 50,
+        }}
         shadows="basic"
         dpr={[1, 2]}
         performance={{ min: 0.5 }}
@@ -34,7 +37,7 @@ export function Scene({ container, material, amount }: SceneProps) {
         />
 
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-          <planeGeometry args={[50, 50]} />
+          <planeGeometry args={[1, 1]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
 

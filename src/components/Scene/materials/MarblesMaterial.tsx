@@ -1,18 +1,18 @@
 import { CONTAINERS } from '@/constants/containers';
 import { MATERIALS } from '@/constants/materials';
-import type { Amount, Container as ContainerType, Material as MaterialType } from '@/types';
+import type { Amount, Container as ContainerType, Material } from '@/types';
 import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 interface MarblesMaterialProps {
-  type: MaterialType;
+  material: Material;
   amount: Amount;
   containerType: ContainerType;
   containerGeometry: THREE.BufferGeometry;
 }
 
-export function MarblesMaterial({ type, amount, containerType, containerGeometry }: MarblesMaterialProps) {
+export function MarblesMaterial({ material: type, amount, containerType, containerGeometry }: MarblesMaterialProps) {
   const groupRef = useRef<THREE.Group>(null);
   const material = MATERIALS[type];
   const container = CONTAINERS[containerType];
