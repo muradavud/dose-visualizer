@@ -1,6 +1,6 @@
-import { MaterialSpecs } from '@/types';
+import { Material } from '@/types';
 
-export const MATERIALS: Record<string, MaterialSpecs> = {
+export const MATERIALS: Record<string, Material> = {
   water: {
     id: 'water',
     type: 'liquid',

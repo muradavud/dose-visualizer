@@ -76,8 +76,8 @@ export function Glass({ material, amount }: GlassProps) {
   const renderMaterial = () => {
     if (!insideGeometryRef.current || !glassGeometryRef.current) return null;
 
-    switch (material) {
-      case 'water':
+    switch (material.type) {
+      case 'liquid':
         return (
           <LiquidMaterial
             material={material}

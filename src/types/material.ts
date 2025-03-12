@@ -1,8 +1,7 @@
-export type Material = 'water' | 'marbles';
 export type MaterialType = 'liquid' | 'marbles';
 
-export interface MaterialSpecs {
-  id: Material;
+export interface Material {
+  id: string;
   type: MaterialType;
   name: string;
   density: number; // g/ml

@@ -1,4 +1,3 @@
-import { MATERIALS } from '@/constants/materials';
 import type { Amount, Material } from '@/types';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { useMemo } from 'react';
@@ -10,8 +9,7 @@ interface MarblesMaterialProps {
   containerGeometry: THREE.BufferGeometry;
 }
 
-export function MarblesMaterial({ material: type, amount, containerGeometry }: MarblesMaterialProps) {
-  const material = MATERIALS[type];
+export function MarblesMaterial({ material, amount, containerGeometry }: MarblesMaterialProps) {
 
   // Convert particle size from mm to meters (16mm = 0.016m)
   const marbleRadius = 0.016 / 2; // 16mm diameter = 0.016m

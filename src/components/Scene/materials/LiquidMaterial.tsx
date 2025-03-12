@@ -1,4 +1,3 @@
-import { MATERIALS } from '@/constants/materials';
 import { liquidFragmentShader, liquidVertexShader } from '@/shaders/liquid';
 import type { Amount, Container, Material } from '@/types';
 import { useFrame } from '@react-three/fiber';
@@ -12,9 +11,8 @@ interface LiquidMaterialProps {
   containerGeometry: THREE.BufferGeometry;
 }
 
-export function LiquidMaterial({ material: type, amount, container, containerGeometry }: LiquidMaterialProps) {
+export function LiquidMaterial({ material , amount, container, containerGeometry }: LiquidMaterialProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const material = MATERIALS[type];
   
   const getHeightForVolume = useCallback((volumeRatio: number) => {
     const { volumeMap } = container;

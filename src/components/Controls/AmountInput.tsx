@@ -1,4 +1,3 @@
-import { MATERIALS } from '@/constants/materials';
 import type { Amount, Material } from '@/types';
 import { useEffect } from 'react';
 
@@ -9,8 +8,7 @@ interface AmountInputProps {
 }
 
 export function AmountInput({ value, onChange, material }: AmountInputProps) {
-  const materialSpec = MATERIALS[material];
-  const isMarbles = materialSpec.type === 'marbles';
+  const isMarbles = material.type === 'marbles';
 
   // Synchronize units when material type changes
   useEffect(() => {

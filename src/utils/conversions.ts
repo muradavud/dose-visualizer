@@ -1,6 +1,6 @@
-import type { Amount, MaterialSpecs } from '@/types';
+import type { Amount, Material } from '@/types';
 
-export function convertToMl(amount: Amount, material: MaterialSpecs): number {
+export function convertToMl(amount: Amount, material: Material): number {
   if (amount.unit === 'ml') {
     return amount.value;
   }
@@ -8,7 +8,7 @@ export function convertToMl(amount: Amount, material: MaterialSpecs): number {
   return amount.value / material.density;
 }
 
-export function convertToGrams(amount: Amount, material: MaterialSpecs): number {
+export function convertToGrams(amount: Amount, material: Material): number {
   if (amount.unit === 'g') {
     return amount.value;
   }
