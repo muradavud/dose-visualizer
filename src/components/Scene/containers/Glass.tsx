@@ -32,7 +32,7 @@ export function Glass({ material, amount }: GlassProps) {
         opacity: 0.5,            // More visible
         depthWrite: false,
         side: THREE.DoubleSide,
-        clearcoat: 0.1           // Add subtle shine
+        clearcoat: 0.1,           // Add subtle shine
       });
 
       glassModel.scene.traverse((child) => {

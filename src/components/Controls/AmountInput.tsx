@@ -49,7 +49,7 @@ export function AmountInput({ value, onChange, material, container }: AmountInpu
           className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
           min="0"
           max={getMaxValue()}
-          step={isMarbles ? "1" : "0.1"}
+          step={isMarbles ? "1" : "5"}
         />
         {!isMarbles && (
           <select
