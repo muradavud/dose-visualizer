@@ -1,7 +1,8 @@
-export type Container = 'glass' | 'spoon';
+export type ContainerType = 'glass' | 'spoon';
 
-export interface ContainerSpecs {
-  id: Container;
+export interface Container {
+  id: string;
+  containerType: ContainerType;
   name: string;
   maxVolume: number; // ml
   dimensions: {

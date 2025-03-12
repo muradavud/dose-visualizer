@@ -1,9 +1,9 @@
 import { MATERIALS } from '@/constants/materials';
-import type { Amount, Container as ContainerType, Material, MaterialType } from '@/types';
+import type { Amount, Container, ContainerType, Material, MaterialType } from '@/types';
 import { Glass } from './containers/Glass';
 
 interface VisualizerProps {
-  container: ContainerType;
+  container: Container;
   material: Material;
   amount: Amount;
 }
@@ -25,19 +25,19 @@ export function Visualizer({ container, material, amount }: VisualizerProps) {
 
   // Render appropriate container-material combination
   const renderVisualization = () => {
-    if (!isValidCombination(container, material)) {
-      console.warn(`Invalid combination: ${container} with ${material}`);
+    if (!isValidCombination(container.containerType, material)) {
+      console.warn(`Invalid combination: ${container.containerType} with ${material}`);
       return null;
     }
 
-    switch (container) {
+    switch (container.containerType) {
       case 'glass':
-        return <Glass material={material} amount={amount} />;
+        return <Glass material={material} amount={amount} container={container} />;
       case 'spoon':
         // return <Spoon material={material} amount={amount} />;
         return null;
       default:
-        console.warn(`Unknown container type: ${container}`);
+        console.warn(`Unknown container type: ${container.containerType}`);
         return null;
     }
   };

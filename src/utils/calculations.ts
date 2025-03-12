@@ -1,9 +1,9 @@
-import type { Amount, ContainerSpecs, MaterialSpecs } from '@/types';
+import type { Amount, Container, MaterialSpecs } from '@/types';
 import { convertToMl } from './conversions';
 
 export function calculateFillHeight(
   amount: Amount,
-  container: ContainerSpecs,
+  container: Container,
   material: MaterialSpecs
 ): number {
   // Convert amount to ml if necessary

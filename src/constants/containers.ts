@@ -1,8 +1,9 @@
-import { ContainerSpecs } from '@/types';
+import { Container } from '@/types';
 
-export const CONTAINERS: Record<string, ContainerSpecs> = {
+export const CONTAINERS: Record<string, Container> = {
   glass: {
     id: 'glass',
+    containerType: 'glass',
     name: 'Glass',
     maxVolume: 250, // ml
     dimensions: {

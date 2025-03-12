@@ -1,5 +1,5 @@
 import { CONTAINERS } from '@/constants';
-import { Container } from '@/types';
+import { Container, ContainerType } from '@/types';
 
 interface ContainerSelectProps {
   value: Container;
@@ -13,12 +13,12 @@ export function ContainerSelect({ value, onChange }: ContainerSelectProps) {
         Container
       </label>
       <select
-        value={value}
-        onChange={(e) => onChange(e.target.value as Container)}
+        value={value.id}
+        onChange={(e) => onChange(CONTAINERS[e.target.value as ContainerType])}
         className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
       >
         {Object.values(CONTAINERS).map((container) => (
-          <option key={container.id} value={container.id} className="text-gray-900">
+          <option key={container.id} value={container.name} className="text-gray-900">
             {container.name}
           </option>
         ))}

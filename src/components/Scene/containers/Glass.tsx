@@ -1,5 +1,5 @@
 import { CONTAINERS } from '@/constants/containers';
-import type { Amount, Material } from '@/types';
+import type { Amount, Container, Material } from '@/types';
 import { useLoader } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
@@ -10,6 +10,7 @@ import { MarblesMaterial } from '../materials/MarblesMaterial';
 interface GlassProps {
   material: Material;
   amount: Amount;
+  container: Container;
 }
 
 export function Glass({ material, amount }: GlassProps) {
@@ -81,7 +82,7 @@ export function Glass({ material, amount }: GlassProps) {
           <LiquidMaterial
             material={material}
             amount={amount}
-            containerType="glass"
+            container={container}
             containerGeometry={insideGeometryRef.current}
           />
         );
@@ -90,7 +91,6 @@ export function Glass({ material, amount }: GlassProps) {
           <MarblesMaterial
             material={material}
             amount={amount}
-            containerType="glass"
             containerGeometry={glassGeometryRef.current}
           />
         );

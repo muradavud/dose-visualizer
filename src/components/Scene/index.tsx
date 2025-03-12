@@ -1,12 +1,12 @@
 'use client';
 
-import type { Amount, Container as ContainerType, Material } from '@/types';
+import type { Amount, Container, Material } from '@/types';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Visualizer } from './Visualizer';
 
 interface SceneProps {
-  container: ContainerType;
+  container: Container;
   material: Material;
   amount: Amount;
 }

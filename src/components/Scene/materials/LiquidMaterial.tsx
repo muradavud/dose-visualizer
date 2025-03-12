@@ -1,7 +1,6 @@
-import { CONTAINERS } from '@/constants/containers';
 import { MATERIALS } from '@/constants/materials';
 import { liquidFragmentShader, liquidVertexShader } from '@/shaders/liquid';
-import type { Amount, Container as ContainerType, Material } from '@/types';
+import type { Amount, Container, Material } from '@/types';
 import { useFrame } from '@react-three/fiber';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -9,14 +8,13 @@ import * as THREE from 'three';
 interface LiquidMaterialProps {
   material: Material;
   amount: Amount;
-  containerType: ContainerType;
+  container: Container;
   containerGeometry: THREE.BufferGeometry;
 }
 
-export function LiquidMaterial({ material: type, amount, containerType, containerGeometry }: LiquidMaterialProps) {
+export function LiquidMaterial({ material: type, amount, container, containerGeometry }: LiquidMaterialProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const material = MATERIALS[type];
-  const container = CONTAINERS[containerType];
   
   const getHeightForVolume = useCallback((volumeRatio: number) => {
     const { volumeMap } = container;
