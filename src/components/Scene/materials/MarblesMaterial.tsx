@@ -1,26 +1,25 @@
-import { CONTAINERS } from '@/constants/containers';
 import { MATERIALS } from '@/constants/materials';
-import type { Amount, Container as ContainerType, Material } from '@/types';
-import { useFrame } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import type { Amount, Material } from '@/types';
+import { Physics, RigidBody } from '@react-three/rapier';
+import { useMemo } from 'react';
 import * as THREE from 'three';
 
 interface MarblesMaterialProps {
   material: Material;
   amount: Amount;
-  containerType: ContainerType;
   containerGeometry: THREE.BufferGeometry;
 }
 
-export function MarblesMaterial({ material: type, amount, containerType, containerGeometry }: MarblesMaterialProps) {
-  const groupRef = useRef<THREE.Group>(null);
+export function MarblesMaterial({ material: type, amount, containerGeometry }: MarblesMaterialProps) {
   const material = MATERIALS[type];
-  const container = CONTAINERS[containerType];
+
+  // Convert particle size from mm to meters (16mm = 0.016m)
+  const marbleRadius = 0.016 / 2; // 16mm diameter = 0.016m
 
   // Create marble instances
   const marbles = useMemo(() => {
     const count = amount.unit === 'count' ? amount.value : Math.floor(amount.value);
-    const marbleGeometry = new THREE.SphereGeometry(material.particleSize ?? 10, 32, 32);
+    const marbleGeometry = new THREE.SphereGeometry(marbleRadius, 32, 32);
     const marbleMaterial = new THREE.MeshPhysicalMaterial({
       color: material.color,
       roughness: 0.1,
@@ -29,36 +28,47 @@ export function MarblesMaterial({ material: type, amount, containerType, contain
       clearcoatRoughness: 0.1,
     });
 
+    const bounds = containerGeometry.boundingBox!;
+    const spacing = marbleRadius * 2.05; // Slightly more than diameter for tiny gap
+
     return Array.from({ length: count }, (_, i) => {
-      // Calculate position within container bounds
-      const radius = container.dimensions.diameter / 2;
-      const angle = (i / count) * Math.PI * 2;
-      const x = Math.cos(angle) * (radius * 0.7); // 0.7 to keep away from edges
-      const z = Math.sin(angle) * (radius * 0.7);
-      const y = -container.dimensions.height / 2 + material.particleSize! + (i % 3) * material.particleSize!;
+      // Stack marbles vertically with a tiny random horizontal offset
+      const offset = 0.0001; // Very small offset to prevent perfect stacking
+      const position = new THREE.Vector3(
+        (Math.random() - 0.5) * offset,
+        bounds.max.y + (i * spacing), // Each marble higher than the last
+        (Math.random() - 0.5) * offset
+      );
 
       return (
-        <mesh
+        <RigidBody
           key={i}
-          geometry={marbleGeometry}
-          material={marbleMaterial}
-          position={[x, y, z]}
-        />
+          colliders="ball"
+          position={position.toArray()}
+          restitution={0.3}
+          friction={0.8}
+          mass={0.01} // 10 grams per marble
+        >
+          <mesh
+            geometry={marbleGeometry}
+            material={marbleMaterial}
+          />
+        </RigidBody>
       );
     });
-  }, [amount, material, container]);
-
-  // Gentle group rotation for visual interest
-  useFrame(({ clock }) => {
-    if (groupRef.current) {
-      const time = clock.getElapsedTime();
-      groupRef.current.rotation.y = Math.sin(time * 0.1) * 0.02;
-    }
-  });
+  }, [amount, material, containerGeometry, marbleRadius]);
 
   return (
-    <group ref={groupRef}>
+    <Physics updatePriority={0} gravity={[0, -0.5, 0]} timeStep="vary">
+      {/* Container using trimesh collider */}
+      <RigidBody type="fixed" friction={0.2} colliders="trimesh">
+        <mesh geometry={containerGeometry}>
+          <meshBasicMaterial wireframe opacity={0} transparent />
+        </mesh>
+      </RigidBody>
+      
+      {/* Marbles */}
       {marbles}
-    </group>
+    </Physics>
   );
 } 

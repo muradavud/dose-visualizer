@@ -17,8 +17,9 @@ export function Glass({ material, amount }: GlassProps) {
   const glassModel = useLoader(GLTFLoader, container.modelPath);
   const insideModel = useLoader(GLTFLoader, container.insideModelPath);
   const insideGeometryRef = useRef<THREE.BufferGeometry | null>(null);
+  const glassGeometryRef = useRef<THREE.BufferGeometry | null>(null);
 
-  // Apply glass material to the outer model
+  // Apply glass material to the outer model and store geometry
   useEffect(() => {
     if (glassModel.scene) {
       const simpleMaterial = new THREE.MeshPhysicalMaterial({
@@ -38,6 +39,14 @@ export function Glass({ material, amount }: GlassProps) {
           child.material = simpleMaterial;
           child.castShadow = false;
           child.receiveShadow = false;
+
+          // Store the glass geometry for collisions
+          if (!glassGeometryRef.current) {
+            const geometry = child.geometry.clone();
+            child.updateMatrix();
+            geometry.applyMatrix4(child.matrix);
+            glassGeometryRef.current = geometry;
+          }
         }
       });
     }
@@ -64,7 +73,7 @@ export function Glass({ material, amount }: GlassProps) {
 
   // Render appropriate material visualization
   const renderMaterial = () => {
-    if (!insideGeometryRef.current) return null;
+    if (!insideGeometryRef.current || !glassGeometryRef.current) return null;
 
     switch (material) {
       case 'water':
@@ -82,7 +91,7 @@ export function Glass({ material, amount }: GlassProps) {
             material={material}
             amount={amount}
             containerType="glass"
-            containerGeometry={insideGeometryRef.current}
+            containerGeometry={glassGeometryRef.current}
           />
         );
       default:
@@ -93,7 +102,7 @@ export function Glass({ material, amount }: GlassProps) {
 
   return (
     <group>
-      <primitive object={glassModel.scene}  />
+      <primitive object={glassModel.scene} />
       {renderMaterial()}
     </group>
   );
