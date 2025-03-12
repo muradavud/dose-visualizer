@@ -1,5 +1,5 @@
 import { MATERIALS } from '@/constants';
-import { Material } from '@/types';
+import { Material, MaterialType } from '@/types';
 
 interface MaterialSelectProps {
   value: Material;
@@ -13,8 +13,8 @@ export function MaterialSelect({ value, onChange }: MaterialSelectProps) {
         Material
       </label>
       <select
-        value={value}
-        onChange={(e) => onChange(e.target.value as Material)}
+        value={value.id}
+        onChange={(e) => onChange(MATERIALS[e.target.value as MaterialType])}
         className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
       >
         {Object.values(MATERIALS).map((material) => (

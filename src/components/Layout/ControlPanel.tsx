@@ -25,7 +25,12 @@ export function ControlPanel({
       <div className="flex gap-4 max-w-3xl mx-auto">
         <ContainerSelect value={container} onChange={onContainerChange} />
         <MaterialSelect value={material} onChange={onMaterialChange} />
-        <AmountInput value={amount} onChange={onAmountChange} material={material} />
+        <AmountInput 
+          value={amount} 
+          onChange={onAmountChange} 
+          material={material} 
+          container={container}
+        />
       </div>
     </div>
   );

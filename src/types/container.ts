@@ -5,6 +5,7 @@ export interface Container {
   containerType: ContainerType;
   name: string;
   maxVolume: number; // ml
+  maxMarbles?: number; // count
   dimensions: {
     height: number; // cm
     diameter: number; // cm

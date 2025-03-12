@@ -4,8 +4,9 @@ export const CONTAINERS: Record<string, Container> = {
   glass: {
     id: 'glass',
     containerType: 'glass',
-    name: 'Glass',
-    maxVolume: 250, // ml
+    name: 'Pokal 12oz',
+    maxVolume: 350, // ml
+    maxMarbles: 120, // count
     dimensions: {
       height: 15, // cm
       diameter: 7, // cm
