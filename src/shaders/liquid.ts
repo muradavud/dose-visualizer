@@ -21,7 +21,7 @@ export const liquidFragmentShader = `
   void main() {
     float heightFactor = (vPosition.y - modelMinY) / (modelMaxY - modelMinY);
     
-    if (heightFactor > fillLevel) {
+    if (heightFactor > fillLevel || fillLevel < 0.001) {
       discard;
     }
     

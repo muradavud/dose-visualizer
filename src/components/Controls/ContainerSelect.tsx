@@ -18,7 +18,7 @@ export function ContainerSelect({ value, onChange }: ContainerSelectProps) {
         className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
       >
         {Object.values(CONTAINERS).map((container) => (
-          <option key={container.id} value={container.name} className="text-gray-900">
+          <option key={container.id} value={container.id} className="text-gray-900">
             {container.name}
           </option>
         ))}

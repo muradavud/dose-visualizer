@@ -1,14 +1,35 @@
 'use client';
 
 import type { Amount, Container, Material } from '@/types';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { Suspense } from 'react';
 import { Visualizer } from './Visualizer';
 
 interface SceneProps {
   container: Container;
   material: Material;
   amount: Amount;
+}
+
+// Loading component that matches the scene background and shows progress
+function LoadingFallback() {
+  const { progress } = useProgress();
+  return (
+    <group>
+      <mesh>
+        <planeGeometry args={[100, 100]} />
+        <meshBasicMaterial color="#e8e8e8" />
+      </mesh>
+      {/* Only show loading indicator if taking more than a moment */}
+      {progress < 100 && progress > 0 && (
+        <mesh position={[0, 0, 0.1]}>
+          <ringGeometry args={[0.5, 0.6, 32]} />
+          <meshBasicMaterial color="#666666" />
+        </mesh>
+      )}
+    </group>
+  );
 }
 
 export function Scene({ container, material, amount }: SceneProps) {
@@ -27,14 +48,16 @@ export function Scene({ container, material, amount }: SceneProps) {
         <ambientLight intensity={1} />
         <directionalLight intensity={5} position={[10, 10, 30]} />
 
-
         {/* <Environment preset="lobby" /> */}
 
-        <Visualizer
-          container={container}
-          material={material}
-          amount={amount}
-        />
+        <Suspense fallback={<LoadingFallback />}>
+          <Visualizer
+            key={`${container.id}-${material.id}`} // Force remount on container/material change
+            container={container}
+            material={material}
+            amount={amount}
+          />
+        </Suspense>
 
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
           <planeGeometry args={[1, 1]} />

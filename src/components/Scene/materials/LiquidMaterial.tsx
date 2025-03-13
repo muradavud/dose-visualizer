@@ -86,7 +86,7 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
       ref={meshRef}
       geometry={containerGeometry}
       material={shaderMaterial}
-      scale={0.995} // Slightly smaller than container to avoid z-fighting
+      // scale={0.995} // Slightly smaller than container to avoid z-fighting
     />
   );
 } 

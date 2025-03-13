@@ -1,4 +1,3 @@
-import { CONTAINERS } from '@/constants/containers';
 import type { Amount, Container, Material } from '@/types';
 import { useLoader } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
@@ -13,28 +12,28 @@ interface GlassProps {
   container: Container;
 }
 
-export function Glass({ material, amount }: GlassProps) {
-  const container = CONTAINERS.glass;
+export function Glass({ material, amount, container }: GlassProps) {
   const glassModel = useLoader(GLTFLoader, container.modelPath);
   const insideModel = useLoader(GLTFLoader, container.insideModelPath);
   const insideGeometryRef = useRef<THREE.BufferGeometry | null>(null);
   const glassGeometryRef = useRef<THREE.BufferGeometry | null>(null);
 
-  // Apply glass material to the outer model and store geometry
+  // Apply materials and store geometries for both models
   useEffect(() => {
-    if (glassModel.scene) {
+    if (glassModel.scene && insideModel.scene) {
       const simpleMaterial = new THREE.MeshPhysicalMaterial({
-        roughness: 0.05,         // Slightly smoother
-        metalness: 0.1,          // Tiny bit of metallic for shine
-        transmission: 0.8,       // Slightly less transparent
-        thickness: 0.5,          // More thickness for better edges
+        roughness: 0.05,
+        metalness: 0.1,
+        transmission: 0.8,
+        thickness: 0.5,
         transparent: true,
-        opacity: 0.5,            // More visible
+        opacity: 0.5,
         depthWrite: false,
         side: THREE.DoubleSide,
-        clearcoat: 0.1,           // Add subtle shine
+        clearcoat: 0.1,
       });
 
+      // Handle glass model
       glassModel.scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.material = simpleMaterial;
@@ -50,12 +49,8 @@ export function Glass({ material, amount }: GlassProps) {
           }
         }
       });
-    }
-  }, [glassModel]);
 
-  // Get the geometry from the inside model
-  useEffect(() => {
-    if (insideModel.scene) {
+      // Handle inside model
       insideModel.scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           insideGeometryRef.current = child.geometry;
@@ -70,7 +65,7 @@ export function Glass({ material, amount }: GlassProps) {
         }
       });
     }
-  }, [insideModel]);
+  }, [glassModel, insideModel]);
 
   // Render appropriate material visualization
   const renderMaterial = () => {
