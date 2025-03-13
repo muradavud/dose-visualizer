@@ -1,33 +1,11 @@
 import type { Amount, Container, ContainerType, Material, MaterialType } from '@/types';
-import { useLoader } from '@react-three/fiber';
-import { Suspense, useEffect, useState } from 'react';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { Suspense } from 'react';
 import { Glass } from './containers/Glass';
 
 interface VisualizerProps {
   container: Container;
   material: Material;
   amount: Amount;
-}
-
-// Preload component that ensures both container and material are ready
-function PreloadedContainer({ container, material, amount }: VisualizerProps) {
-  const [isReady, setIsReady] = useState(false);
-  
-  // Preload the container model
-  const glassModel = useLoader(GLTFLoader, container.modelPath);
-  const insideModel = useLoader(GLTFLoader, container.insideModelPath);
-
-  useEffect(() => {
-    // Ensure models are loaded before showing
-    if (glassModel && insideModel) {
-      setIsReady(true);
-    }
-  }, [glassModel, insideModel]);
-
-  if (!isReady) return null;
-
-  return <Glass material={material} amount={amount} container={container} />;
 }
 
 export function Visualizer({ container, material, amount }: VisualizerProps) {
@@ -53,7 +31,7 @@ export function Visualizer({ container, material, amount }: VisualizerProps) {
       case 'glass':
         return (
           <Suspense fallback={null}>
-            <PreloadedContainer 
+            <Glass 
               container={container}
               material={material}
               amount={amount}

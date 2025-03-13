@@ -19,11 +19,18 @@ export default function Home() {
   const handleContainerChange = (newContainer: Container) => {
     setSelectedContainer(newContainer);
 
-    // Reset amount
-    setAmount({
-      value: 0,
-      unit: 'ml'
-    });
+    // Adjust amount based on new container's maximum
+    if (selectedMaterial.type === 'marbles') {
+      setAmount({
+        value: Math.min(amount.value, newContainer.maxMarbles || 0),
+        unit: 'count'
+      });
+    } else {
+      setAmount({
+        value: Math.min(amount.value, newContainer.maxVolume),
+        unit: amount.unit
+      });
+    }
   };
 
   return (

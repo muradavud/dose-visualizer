@@ -1,6 +1,6 @@
 import type { Amount, Container, Material } from '@/types';
 import { useLoader } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { LiquidMaterial } from '../materials/LiquidMaterial';
@@ -17,6 +17,7 @@ export function Glass({ material, amount, container }: GlassProps) {
   const insideModel = useLoader(GLTFLoader, container.insideModelPath);
   const insideGeometryRef = useRef<THREE.BufferGeometry | null>(null);
   const glassGeometryRef = useRef<THREE.BufferGeometry | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   // Apply materials and store geometries for both models
   useEffect(() => {
@@ -64,6 +65,8 @@ export function Glass({ material, amount, container }: GlassProps) {
           });
         }
       });
+
+      setIsReady(true);
     }
   }, [glassModel, insideModel]);
 
@@ -94,6 +97,10 @@ export function Glass({ material, amount, container }: GlassProps) {
         return null;
     }
   };
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <group>
