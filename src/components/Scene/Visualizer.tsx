@@ -1,6 +1,7 @@
 import type { Amount, Container, ContainerType, Material, MaterialType } from '@/types';
 import { Suspense } from 'react';
 import { Glass } from './containers/Glass';
+import { LoadingIndicator } from './LoadingIndicator';
 
 interface VisualizerProps {
   container: Container;
@@ -30,7 +31,7 @@ export function Visualizer({ container, material, amount }: VisualizerProps) {
     switch (container.containerType) {
       case 'glass':
         return (
-          <Suspense fallback={null}>
+          <Suspense fallback={<LoadingIndicator />}>
             <Glass 
               container={container}
               material={material}
@@ -52,4 +53,5 @@ export function Visualizer({ container, material, amount }: VisualizerProps) {
       {renderVisualization()}
     </group>
   );
-} 
+}
+

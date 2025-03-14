@@ -19,21 +19,22 @@ export function Glass({ material, amount, container }: GlassProps) {
   const glassGeometryRef = useRef<THREE.BufferGeometry | null>(null);
   const [isReady, setIsReady] = useState(false);
 
+  // Create glass material once using useRef
+  const simpleMaterial = useRef(new THREE.MeshPhysicalMaterial({
+    roughness: 0.05,
+    metalness: 0.1,
+    transmission: 0.8,
+    thickness: 0.5,
+    transparent: true,
+    opacity: 0.5,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    clearcoat: 0.1,
+  })).current;
+
   // Apply materials and store geometries for both models
   useEffect(() => {
     if (glassModel.scene && insideModel.scene) {
-      const simpleMaterial = new THREE.MeshPhysicalMaterial({
-        roughness: 0.05,
-        metalness: 0.1,
-        transmission: 0.8,
-        thickness: 0.5,
-        transparent: true,
-        opacity: 0.5,
-        depthWrite: false,
-        side: THREE.DoubleSide,
-        clearcoat: 0.1,
-      });
-
       // Handle glass model
       glassModel.scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
@@ -68,7 +69,7 @@ export function Glass({ material, amount, container }: GlassProps) {
 
       setIsReady(true);
     }
-  }, [glassModel, insideModel]);
+  }, [glassModel, insideModel, simpleMaterial]);
 
   // Render appropriate material visualization
   const renderMaterial = () => {
