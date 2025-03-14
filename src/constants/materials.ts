@@ -9,6 +9,7 @@ export const MATERIALS: Record<string, Material> = {
     name: 'Water',
     density: 1.0, // g/ml
     color: '#add8e6',
+    isDiscrete: false
   },
   marbles: {
     id: 'marbles',
@@ -16,5 +17,6 @@ export const MATERIALS: Record<string, Material> = {
     name: 'Marbles',
     density: 2.6, // g/ml
     color: '#808080',
+    isDiscrete: true,
   },
 }; 

@@ -4,6 +4,7 @@ import { ControlPanel } from '@/components/Layout/ControlPanel';
 import { Scene } from '@/components/Scene';
 import { DEFAULT_MATERIAL, MATERIALS } from '@/constants';
 import { CONTAINERS, DEFAULT_CONTAINER } from '@/constants/containers';
+import { UNITS } from '@/constants/units';
 import { Amount, Container, Material } from '@/types';
 import { useState } from 'react';
 
@@ -12,7 +13,7 @@ export default function Home() {
   const [selectedMaterial, setSelectedMaterial] = useState<Material>(MATERIALS[DEFAULT_MATERIAL]);
   const [amount, setAmount] = useState<Amount>({
     value: 0,
-    unit: 'ml'
+    unit: UNITS.MILLILITER
   });
 
   // Handle container changes and reset material and amount
@@ -23,7 +24,7 @@ export default function Home() {
     if (selectedMaterial.type === 'marbles') {
       setAmount({
         value: Math.min(amount.value, newContainer.maxMarbles || 0),
-        unit: 'count'
+        unit: UNITS.COUNT
       });
     } else {
       setAmount({

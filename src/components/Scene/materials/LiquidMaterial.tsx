@@ -1,5 +1,7 @@
+import { UNITS } from '@/constants/units';
 import { liquidFragmentShader, liquidVertexShader } from '@/shaders/liquid';
 import type { Amount, Container, Material } from '@/types';
+import { convertUnits } from '@/utils/conversions';
 import { useFrame } from '@react-three/fiber';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -54,7 +56,7 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
   useEffect(() => {
     if (meshRef.current) {
       const maxVolume = container.maxVolume;
-      const currentVolume = amount.unit === 'ml' ? amount.value : amount.value / material.density;
+      const currentVolume = convertUnits(amount.value, amount.unit, UNITS.MILLILITER, material);
       const volumeRatio = Math.min(currentVolume / maxVolume, 1);
       
       // Convert volume ratio to height ratio using our mapping
@@ -62,7 +64,7 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
       
       shaderMaterial.uniforms.fillLevel.value = heightRatio;
     }
-  }, [amount, container.maxVolume, getHeightForVolume, material.density, shaderMaterial.uniforms]);
+  }, [amount, container.maxVolume, getHeightForVolume, material, shaderMaterial.uniforms]);
 
   // Animate waves
   useFrame(({ clock }) => {

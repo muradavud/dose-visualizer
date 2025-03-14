@@ -101,7 +101,7 @@ export function MarblesMaterial({ material, amount, containerGeometry }: Marbles
     if (!containerGeometry.boundingBox) return;
     
     const bounds = containerGeometry.boundingBox;
-    const count = amount.unit === 'count' ? amount.value : Math.floor(amount.value);
+    const count = amount.unit.type === 'count' ? amount.value : Math.floor(amount.value);
     
     // Find the center point of the container
     const centerX = (bounds.min.x + bounds.max.x) / 2;
