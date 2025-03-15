@@ -16,24 +16,6 @@ export default function Home() {
     unit: UNITS.MILLILITER
   });
 
-  // Handle container changes and reset material and amount
-  const handleContainerChange = (newContainer: Container) => {
-    setSelectedContainer(newContainer);
-
-    // Adjust amount based on new container's maximum
-    if (selectedMaterial.type === 'marbles') {
-      setAmount({
-        value: Math.min(amount.value, newContainer.maxMarbles || 0),
-        unit: UNITS.COUNT
-      });
-    } else {
-      setAmount({
-        value: Math.min(amount.value, newContainer.maxVolume),
-        unit: amount.unit
-      });
-    }
-  };
-
   return (
     <main className="flex min-h-screen flex-col">
       <div className="flex-1 relative">
@@ -47,7 +29,7 @@ export default function Home() {
         container={selectedContainer}
         material={selectedMaterial}
         amount={amount}
-        onContainerChange={handleContainerChange}
+        onContainerChange={setSelectedContainer}
         onMaterialChange={setSelectedMaterial}
         onAmountChange={setAmount}
       />

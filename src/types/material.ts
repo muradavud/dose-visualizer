@@ -1,4 +1,4 @@
-export type MaterialType = 'liquid' | 'marbles';
+export type MaterialType = 'liquid' | 'marbles' | 'granular';
 
 export interface Material {
   id: string;
@@ -6,7 +6,11 @@ export interface Material {
   name: string;
   density: number; // g/ml
   color: string;
-  isDiscrete: boolean; // For materials like marbles
+}
+
+// Utility function to check if a material is discrete
+export function isDiscreteMaterial(material: Material): boolean {
+  return material.type === 'marbles';
 }
 
 // Unit system with conversion factors

@@ -1,5 +1,6 @@
 import { UNITS } from '@/constants/units';
 import type { Amount, Container, Material } from '@/types';
+import { isDiscreteMaterial } from '@/types/material';
 import { convertUnits } from './conversions';
 
 export function calculateFillHeight(
@@ -19,21 +20,30 @@ export function calculateFillHeight(
 }
 
 /**
- * Calculate the maximum allowed value for an amount input based on material type and container
+ * Adjusts an amount to ensure it doesn't exceed the maximum allowed by the container
+ * Returns a new Amount object with the adjusted value and the same unit as the input
  */
-export function getMaxValue(value: Amount, material: Material, container: Container): number {
-  if (material.isDiscrete) {
-    return container.maxMarbles || 0;
+export function adjustValue(amount: Amount, material: Material, container: Container): Amount {
+  let maxValue: number;
+  
+  if (isDiscreteMaterial(material)) {
+    maxValue = container.maxMarbles || 0;
   } else {
     // For liquids
-    if (value.unit.type === 'volume') {
+    if (amount.unit.type === 'volume') {
       // Convert maxVolume (in mL) to the current volume unit
-      return convertUnits(container.maxVolume, UNITS.MILLILITER, value.unit, material);
-    } else if (value.unit.type === 'mass') {
+      maxValue = convertUnits(container.maxVolume, UNITS.MILLILITER, amount.unit, material);
+    } else if (amount.unit.type === 'mass') {
       // Convert maxVolume to grams using density, then to the current mass unit
       const maxMassInGrams = container.maxVolume * material.density;
-      return convertUnits(maxMassInGrams, UNITS.GRAM, value.unit, material);
+      maxValue = convertUnits(maxMassInGrams, UNITS.GRAM, amount.unit, material);
+    } else {
+      maxValue = container.maxVolume;
     }
-    return container.maxVolume;
   }
+  
+  return {
+    value: Math.min(amount.value, maxValue),
+    unit: amount.unit
+  };
 } 

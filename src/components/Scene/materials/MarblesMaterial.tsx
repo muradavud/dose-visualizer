@@ -11,21 +11,12 @@ interface MarblesMaterialProps {
 }
 
 export function MarblesMaterial({ material, amount, containerGeometry }: MarblesMaterialProps) {
-  // Convert particle size from mm to meters (16mm = 0.016m)
   const marbleRadius = 0.016 / 2; // 16mm diameter = 0.016m
-  
-  // Track marbles with state to manage additions/removals smoothly
   const [marbles, setMarbles] = useState<JSX.Element[]>([]);
-  
-  // Track physics pause state
   const [isPhysicsPaused, setIsPhysicsPaused] = useState(false);
-  
-  // Track tab visibility to reset physics when tab becomes visible again
   const [isTabVisible, setIsTabVisible] = useState(true);
-  
-  // Reset physics world when tab visibility changes
   const physicsKey = useRef(0);
-  
+
   // Generate a stable unique ID for each marble
   const getMarbleId = (index: number) => `marble-${material.id}-${index}`;
   
@@ -39,7 +30,7 @@ export function MarblesMaterial({ material, amount, containerGeometry }: Marbles
   })).current;
   
   // Create marble geometry once
-  const marbleGeometry = useRef(new THREE.SphereGeometry(marbleRadius, 32, 32)).current;
+  const marbleGeometry = useRef(new THREE.SphereGeometry(marbleRadius, 8, 8)).current;
 
   // Fixed grid layout configuration - 3x3 grid
   const gridConfig = {
@@ -152,7 +143,7 @@ export function MarblesMaterial({ material, amount, containerGeometry }: Marbles
     
     setMarbles(newMarbles);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, containerGeometry, marbleRadius, material.id]);
+  }, [amount]);
   
   return (
     <>
@@ -179,7 +170,6 @@ export function MarblesMaterial({ material, amount, containerGeometry }: Marbles
         timeStep="vary"
         paused={isPhysicsPaused || !isTabVisible}
       >
-        {/* Container using trimesh collider */}
         <RigidBody type="fixed" friction={0.2} colliders="trimesh">
           <mesh geometry={containerGeometry}>
             <meshBasicMaterial wireframe opacity={0} transparent />
