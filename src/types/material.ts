@@ -5,7 +5,9 @@ export interface Material {
   type: MaterialType;
   name: string;
   density: number; // g/ml
+  // Graphical properties
   color: string;
+  fresnelIntensity?: number;
 }
 
 // Utility function to check if a material is discrete

@@ -26,14 +26,15 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
         fillLevel: { value: 0 },
         opacity: { value: 0.3 },
         modelMinY: { value: 0 },
-        modelMaxY: { value: 1 }
+        modelMaxY: { value: 1 },
+        fresnelIntensity: { value: material.fresnelIntensity ?? 0.05 }
       },
-      transparent: true,
       side: THREE.DoubleSide,
-      depthWrite: false,
-      depthTest: true
+      // transparent: true,
+      // depthWrite: false,
+      // depthTest: true
     });
-  }, [material.color]);
+  }, [material.color, material.fresnelIntensity]);
 
   // Update fill level based on amount
   useEffect(() => {
@@ -64,6 +65,7 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
       ref={meshRef}
       geometry={containerGeometry}
       material={shaderMaterial}
-    />
+      position={[0, 0.00005, 0]}
+      />
   );
 } 

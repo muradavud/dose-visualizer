@@ -3,7 +3,6 @@ import { useLoader } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { GranularMaterial } from '../materials/GranularMaterial';
 import { LiquidMaterial } from '../materials/LiquidMaterial';
 import { MarblesMaterial } from '../materials/MarblesMaterial';
 
@@ -28,7 +27,7 @@ export function Glass({ material, amount, container }: GlassProps) {
     thickness: 0.5,
     transparent: true,
     opacity: 0.5,
-    depthWrite: false,
+    // depthWrite: false,
     side: THREE.DoubleSide,
     clearcoat: 0.1,
   })).current;
@@ -84,6 +83,7 @@ export function Glass({ material, amount, container }: GlassProps) {
 
     switch (material.type) {
       case 'liquid':
+      case 'granular':
         return (
           <LiquidMaterial
             material={material}
@@ -98,15 +98,6 @@ export function Glass({ material, amount, container }: GlassProps) {
             material={material}
             amount={amount}
             containerGeometry={glassGeometryRef.current}
-          />
-        );
-      case 'granular':
-        return (
-          <GranularMaterial
-            material={material}
-            amount={amount}
-            container={container}
-            containerGeometry={insideGeometryRef.current}
           />
         );
       default:

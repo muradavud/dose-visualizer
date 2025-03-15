@@ -15,6 +15,7 @@ export const liquidFragmentShader = `
   uniform float opacity;
   uniform float modelMinY;
   uniform float modelMaxY;
+  uniform float fresnelIntensity;
   varying vec3 vPosition;
   varying vec3 vNormal;
   
@@ -28,7 +29,7 @@ export const liquidFragmentShader = `
     vec3 viewDirection = normalize(cameraPosition - vPosition);
     float fresnelFactor = pow(1.0 - abs(dot(viewDirection, vNormal)), 2.0);
     
-    vec3 finalColor = mix(color, vec3(1.0), fresnelFactor * 0.5);
+    vec3 finalColor = mix(color, vec3(1.0), fresnelFactor * fresnelIntensity);
     
     gl_FragColor = vec4(finalColor, opacity);
   }
