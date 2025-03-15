@@ -1,4 +1,4 @@
-export const liquidVertexShader = `
+export const granularVertexShader = `
   varying vec3 vPosition;
   varying vec3 vNormal;
   
@@ -9,7 +9,7 @@ export const liquidVertexShader = `
   }
 `;
 
-export const liquidFragmentShader = `
+export const granularFragmentShader = `
   uniform vec3 color;
   uniform float fillLevel;
   uniform float opacity;

@@ -1,9 +1,9 @@
 import { UNITS } from '@/constants/units';
 import { liquidFragmentShader, liquidVertexShader } from '@/shaders/liquid';
 import type { Amount, Container, Material } from '@/types';
+import { getHeightForVolume } from '@/utils/calculations';
 import { convertUnits } from '@/utils/conversions';
-import { useFrame } from '@react-three/fiber';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 interface LiquidMaterialProps {
@@ -15,23 +15,6 @@ interface LiquidMaterialProps {
 
 export function LiquidMaterial({ material , amount, container, containerGeometry }: LiquidMaterialProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  
-  const getHeightForVolume = useCallback((volumeRatio: number) => {
-    const { volumeMap } = container;
-    
-    // Find the two mapping points we're between
-    for (let i = 0; i < volumeMap.length - 1; i++) {
-      if (volumeRatio <= volumeMap[i + 1].volume) {
-        const lower = volumeMap[i];
-        const upper = volumeMap[i + 1];
-        
-        // Interpolate between the two points
-        const ratio = (volumeRatio - lower.volume) / (upper.volume - lower.volume);
-        return lower.height + (upper.height - lower.height) * ratio;
-      }
-    }
-    return 1.0;
-  }, [container]);
   
   // Create shader material
   const shaderMaterial = useMemo(() => {
@@ -59,20 +42,13 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
       const currentVolume = convertUnits(amount.value, amount.unit, UNITS.MILLILITER, material);
       const volumeRatio = Math.min(currentVolume / maxVolume, 1);
       
-      // Convert volume ratio to height ratio using our mapping
-      const heightRatio = getHeightForVolume(volumeRatio);
+      // Use the imported function instead
+      const heightRatio = getHeightForVolume(volumeRatio, container);
       
       shaderMaterial.uniforms.fillLevel.value = heightRatio;
     }
-  }, [amount, container.maxVolume, getHeightForVolume, material, shaderMaterial.uniforms]);
+  }, [amount, container, material, shaderMaterial.uniforms]);
 
-  // Animate waves
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      const time = clock.getElapsedTime();
-      meshRef.current.rotation.y = Math.sin(time * 0.1) * 0.02;
-    }
-  });
 
   useEffect(() => {
     if (!containerGeometry.boundingBox) {
@@ -88,7 +64,6 @@ export function LiquidMaterial({ material , amount, container, containerGeometry
       ref={meshRef}
       geometry={containerGeometry}
       material={shaderMaterial}
-      // scale={0.995} // Slightly smaller than container to avoid z-fighting
     />
   );
 } 

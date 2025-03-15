@@ -3,6 +3,7 @@ import { useLoader } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GranularMaterial } from '../materials/GranularMaterial';
 import { LiquidMaterial } from '../materials/LiquidMaterial';
 import { MarblesMaterial } from '../materials/MarblesMaterial';
 
@@ -42,12 +43,17 @@ export function Glass({ material, amount, container }: GlassProps) {
           child.castShadow = false;
           child.receiveShadow = false;
 
-          // Store the glass geometry for collisions
+          // Store the glass geometry directly without transformation
           if (!glassGeometryRef.current) {
-            const geometry = child.geometry.clone();
-            child.updateMatrix();
-            geometry.applyMatrix4(child.matrix);
-            glassGeometryRef.current = geometry;
+            glassGeometryRef.current = child.geometry;
+            
+            // Log glass bounds for debugging
+            child.geometry.computeBoundingBox();
+            const bounds = child.geometry.boundingBox;
+            console.log('Glass model bounds:', {
+              min: bounds.min,
+              max: bounds.max
+            });
           }
         }
       });
@@ -55,6 +61,7 @@ export function Glass({ material, amount, container }: GlassProps) {
       // Handle inside model
       insideModel.scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
+          // Store the inside geometry directly without transformation
           insideGeometryRef.current = child.geometry;
           
           // Get the actual bounds of the geometry
@@ -91,6 +98,15 @@ export function Glass({ material, amount, container }: GlassProps) {
             material={material}
             amount={amount}
             containerGeometry={glassGeometryRef.current}
+          />
+        );
+      case 'granular':
+        return (
+          <GranularMaterial
+            material={material}
+            amount={amount}
+            container={container}
+            containerGeometry={insideGeometryRef.current}
           />
         );
       default:
