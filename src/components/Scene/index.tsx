@@ -1,7 +1,7 @@
 'use client';
 
 import type { Amount, Container, Material } from '@/types';
-import { OrbitControls, useProgress } from '@react-three/drei';
+import { OrbitControls, useGLTF, useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 import { Visualizer } from './Visualizer';
@@ -32,37 +32,56 @@ function LoadingFallback() {
   );
 }
 
+function CuttingBoard() {
+  const { scene } = useGLTF('/assets/models/cuttingboard.glb');
+  return (
+    <primitive 
+      object={scene} 
+      position={[0, 0, 0]} 
+      scale={[0.01, 0.01, 0.01]}
+    />
+  );
+}
+
 export function Scene({ container, material, amount }: SceneProps) {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       <Canvas
         camera={{
-          position: [0.4, 0.3, 0],
+          position: [-0.4, 0.3, 0.3],
           fov: 50,
         }}
         shadows="basic"
         dpr={[1, 2]}
         performance={{ min: 0.5 }}
       >
-        <color attach="background" args={['#e8e8e8']} />
+        {/* Gradient background */}
+        <color attach="background" args={['#f0f4f8']} />
+        <fog attach="fog" args={['#f0f4f8', 5, 20]} />
+        
+        {/* Improved lighting setup */}
         <ambientLight intensity={1} />
-        <directionalLight intensity={5} position={[10, 10, 30]} />
-
-        {/* <Environment preset="lobby" /> */}
+        <directionalLight 
+          intensity={4} 
+          position={[10, 10, 30]} 
+          castShadow
+        />
+        
+        {/* Environment lighting */}
+        {/* <Environment preset="lobby" background={false} /> */}
 
         <Suspense fallback={<LoadingFallback />}>
           <Visualizer
-            key={`${container.id}-${material.id}`} // Force remount on container/material change
+            key={`${container.id}-${material.id}`}
             container={container}
             material={material}
             amount={amount}
           />
         </Suspense>
 
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-          <planeGeometry args={[1, 1]} />
-          <meshStandardMaterial color="#ffffff" />
-        </mesh>
+        <Suspense fallback={null}>
+          <CuttingBoard />
+        </Suspense>
 
         <OrbitControls />
       </Canvas>
