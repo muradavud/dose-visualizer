@@ -1,7 +1,7 @@
 'use client';
 
-import { ControlPanel } from '@/components/Layout/ControlPanel';
-import { Scene } from '@/components/Scene';
+import { ControlPanel } from '@/components/layout/ControlPanel';
+import { Scene } from '@/components/scene';
 import { DEFAULT_MATERIAL, MATERIALS } from '@/constants';
 import { CONTAINERS, DEFAULT_CONTAINER } from '@/constants/containers';
 import { UNITS } from '@/constants/units';
@@ -15,6 +15,7 @@ export default function Home() {
     value: 0,
     unit: UNITS.MILLILITER
   });
+  const [showBanana, setShowBanana] = useState(false);
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -23,15 +24,18 @@ export default function Home() {
           container={selectedContainer}
           material={selectedMaterial}
           amount={amount}
+          showBanana={showBanana}
         />
       </div>
       <ControlPanel
         container={selectedContainer}
         material={selectedMaterial}
         amount={amount}
+        showBanana={showBanana}
         onContainerChange={setSelectedContainer}
         onMaterialChange={setSelectedMaterial}
         onAmountChange={setAmount}
+        onToggleBanana={() => setShowBanana(!showBanana)}
       />
     </main>
   );

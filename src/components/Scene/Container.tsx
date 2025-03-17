@@ -2,8 +2,8 @@ import type { Amount, Container, Material } from '@/types';
 import { useGLTF } from '@react-three/drei';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { LiquidMaterial } from '../materials/LiquidMaterial';
-import { MarblesMaterial } from '../materials/MarblesMaterial';
+import { LiquidMaterial } from './materials/LiquidMaterial';
+import { MarblesMaterial } from './materials/MarblesMaterial';
 
 interface GlassProps {
   material: Material;
@@ -11,7 +11,7 @@ interface GlassProps {
   container: Container;
 }
 
-export function Glass({ material, amount, container }: GlassProps) {
+export function Container({ material, amount, container }: GlassProps) {
   const { scene: glassModel } = useGLTF(container.modelPath);
   const glassMeshRef = useRef<THREE.Mesh | null>(null);
 

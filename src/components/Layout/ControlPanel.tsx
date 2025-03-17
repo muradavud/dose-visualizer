@@ -1,26 +1,31 @@
 import type { Amount, Container, Material } from '@/types';
 import { adjustValue } from '@/utils/calculations';
 import { convertUnits } from '@/utils/conversions';
-import { AmountInput } from '../Controls/AmountInput';
-import { ContainerSelect } from '../Controls/ContainerSelect';
-import { MaterialSelect } from '../Controls/MaterialSelect';
+import { AmountInput } from '../controls/AmountInput';
+import { ContainerSelect } from '../controls/ContainerSelect';
+import { MaterialSelect } from '../controls/MaterialSelect';
+import { Button } from '../ui/Button';
 
 interface ControlPanelProps {
   container: Container;
   material: Material;
   amount: Amount;
+  showBanana: boolean;
   onContainerChange: (container: Container) => void;
   onMaterialChange: (material: Material) => void;
   onAmountChange: (amount: Amount) => void;
+  onToggleBanana: () => void;
 }
 
 export function ControlPanel({
   container,
   material,
   amount,
+  showBanana,
   onContainerChange,
   onMaterialChange,
   onAmountChange,
+  onToggleBanana,
 }: ControlPanelProps) {
   // Handle container changes
   const handleContainerChange = (newContainer: Container) => {
@@ -65,6 +70,12 @@ export function ControlPanel({
           onChange={handleAmountChange} 
           material={material} 
         />
+        <Button
+          variant={showBanana ? "default" : "outline"}
+          onClick={onToggleBanana}
+        >
+          Banana
+        </Button>
       </div>
     </div>
   );

@@ -1,21 +1,45 @@
 import type { Amount, Container, Material } from '@/types';
+import { useGLTF } from '@react-three/drei';
 import { Suspense } from 'react';
-import { Glass } from './containers/Glass';
-import { LoadingIndicator } from './LoadingIndicator';
+import { LoadingIndicator } from '../ui/LoadingIndicator';
+import { Container as ContainerComponent } from './Container';
 
 interface VisualizerProps {
   container: Container;
   material: Material;
   amount: Amount;
+  showBanana?: boolean;
 }
 
-export function Visualizer({ container, material, amount }: VisualizerProps) {
+function CuttingBoard() {
+  const { scene } = useGLTF('/assets/models/cuttingboard.glb');
+  return (
+    <primitive 
+      object={scene} 
+      position={[0, 0, 0]} 
+      scale={[0.01, 0.01, 0.01]}
+    />
+  );
+}
+
+function Banana() {
+  const { scene } = useGLTF('/assets/models/banana.glb');
+  return (
+    <primitive 
+      object={scene} 
+      position={[0.1, 0, -0.05]}
+      rotation={[0, 90, 0]}
+    />
+  );
+}
+
+export function Visualizer({ container, material, amount, showBanana = false }: VisualizerProps) {
   const renderVisualization = () => {
     switch (container.containerType) {
       case 'glass':
         return (
           <Suspense fallback={<LoadingIndicator />}>
-            <Glass 
+            <ContainerComponent 
               container={container}
               material={material}
               amount={amount}
@@ -34,6 +58,14 @@ export function Visualizer({ container, material, amount }: VisualizerProps) {
   return (
     <group>
       {renderVisualization()}
+      <Suspense fallback={null}>
+        <CuttingBoard />
+      </Suspense>
+      {showBanana && (
+        <Suspense fallback={null}>
+          <Banana />
+        </Suspense>
+      )}
     </group>
   );
 }
