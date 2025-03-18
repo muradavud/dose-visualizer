@@ -1,41 +1,68 @@
 'use client';
 
+import { DEFAULT_MATERIAL, MATERIALS } from '@/constants';
+import { CONTAINERS, DEFAULT_CONTAINER } from '@/constants/containers';
+import { UNITS } from '@/constants/units';
 import type { Amount, Container, Material } from '@/types';
-import { OrbitControls, useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
+import { LoadingFallback } from '../ui/LoadingFallback';
+import { CameraController } from './CameraController';
+import { SceneControls } from './SceneControls';
 import { Visualizer } from './Visualizer';
 
 interface SceneProps {
-  container: Container;
-  material: Material;
-  amount: Amount;
-  showBanana: boolean;
+  // Optional initial values
+  initialContainer?: Container;
+  initialMaterial?: Material;
+  initialAmount?: Amount;
+  initialShowBanana?: boolean;
 }
 
-// Loading component that matches the scene background and shows progress
-function LoadingFallback() {
-  const { progress } = useProgress();
-  return (
-    <group>
-      <mesh>
-        <planeGeometry args={[100, 100]} />
-        <meshBasicMaterial color="#e8e8e8" />
-      </mesh>
-      {/* Only show loading indicator if taking more than a moment */}
-      {progress < 100 && progress > 0 && (
-        <mesh position={[0, 0, 0.1]}>
-          <ringGeometry args={[0.5, 0.6, 32]} />
-          <meshBasicMaterial color="#666666" />
-        </mesh>
-      )}
-    </group>
-  );
-}
-
-export function Scene({ container, material, amount, showBanana }: SceneProps) {
+export function Scene({ 
+  initialContainer,
+  initialMaterial,
+  initialAmount,
+  initialShowBanana = false
+}: SceneProps = {}) {
+  // Internal state management
+  const [container, setContainer] = useState<Container>(initialContainer || CONTAINERS[DEFAULT_CONTAINER]);
+  const [material, setMaterial] = useState<Material>(initialMaterial || MATERIALS[DEFAULT_MATERIAL]);
+  const [amount, setAmount] = useState<Amount>(initialAmount || {
+    value: 0,
+    unit: UNITS.MILLILITER
+  });
+  const [showBanana, setShowBanana] = useState(initialShowBanana);
+  
+  // Handle scene-specific view controls
+  const handleResetView = () => {
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      const event = new CustomEvent('reset-camera');
+      canvas.dispatchEvent(event);
+    }
+  };
+  
+  // Toggle banana visibility
+  const handleToggleBanana = () => {
+    setShowBanana(!showBanana);
+  };
+  
   return (
     <div className="absolute inset-0 flex items-center justify-center">
+      {/* Scene Controls UI */}
+      <SceneControls 
+        onResetView={handleResetView}
+        container={container}
+        material={material}
+        amount={amount}
+        showBanana={showBanana}
+        onContainerChange={setContainer}
+        onMaterialChange={setMaterial}
+        onAmountChange={setAmount}
+        onToggleBanana={handleToggleBanana}
+      />
+      
       <Canvas
         camera={{
           position: [-0.4, 0.3, 0.3],
@@ -62,7 +89,7 @@ export function Scene({ container, material, amount, showBanana }: SceneProps) {
           />
         </Suspense>
 
-        <OrbitControls />
+        <CameraController />
       </Canvas>
     </div>
   );

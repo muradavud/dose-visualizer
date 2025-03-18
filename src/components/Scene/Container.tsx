@@ -1,9 +1,10 @@
+import { CONTAINER_MATERIALS } from '@/constants';
 import type { Amount, Container, Material } from '@/types';
 import { useGLTF } from '@react-three/drei';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { LiquidMaterial } from './materials/LiquidMaterial';
-import { MarblesMaterial } from './materials/MarblesMaterial';
+import { LiquidMaterial } from './LiquidMaterial';
+import { MarblesMaterial } from './MarblesMaterial';
 
 interface GlassProps {
   material: Material;
@@ -17,17 +18,8 @@ export function Container({ material, amount, container }: GlassProps) {
 
   // Create glass material once using useMemo
   const simpleMaterial = useMemo(() => {
-    return new THREE.MeshPhysicalMaterial({
-      roughness: 0.4,
-      metalness: 0.4,
-      transmission: 0.8,
-      thickness: 0.5,
-      transparent: true,
-      opacity: 0.3,
-      side: THREE.DoubleSide,
-      clearcoat: 0.2,
-    });
-  }, []);
+    return new THREE.MeshPhysicalMaterial(CONTAINER_MATERIALS[container.id]);
+  }, [container.id]);
 
   // Create mesh immediately when model is loaded
   const glassMesh = useMemo<THREE.Mesh | null>(() => {

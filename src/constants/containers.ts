@@ -27,61 +27,60 @@ export const CONTAINERS: Record<string, Container> = {
     id: 'vardagen_15oz',
     containerType: 'glass',
     name: 'Glass Vardagen 15oz',
-    maxVolume: 430, // ml
-    maxMarbles: 120, // count
+    maxVolume: 430, 
+    maxMarbles: 120, 
     dimensions: {
-      height: 15, // cm
-      diameter: 7, // cm
+      height: 15, 
+      diameter: 7, 
     },
     modelPath: '/assets/models/glass_vardagen_15oz.glb',
     insideModelPath: '/assets/models/glass_vardagen_15oz_inside.glb',
     volumeMap: [
-      { volume: 0, height: 0 },    // Empty
-      { volume: 0.1, height: 0.3 }, // 10% volume = 30% height (narrow bottom)
-      { volume: 0.3, height: 0.5 }, // 30% volume = 50% height
-      { volume: 0.6, height: 0.7 }, // 60% volume = 70% height (wide middle)
-      { volume: 1.0, height: 1.0 }  // Full
+      { volume: 0, height: 0 },    
+      { volume: 0.1, height: 0.3 }, 
+      { volume: 0.3, height: 0.5 }, 
+      { volume: 0.6, height: 0.7 }, 
+      { volume: 1.0, height: 1.0 }  
     ]
   },
   mopsig_tablespoon: {
     id: 'mopsig_tablespoon',
     containerType: 'glass',
     name: 'Mopsig Tablespoon',
-    maxVolume: 100, // ml
-    maxMarbles: 0, // count
+    maxVolume: 100, 
+    maxMarbles: 0, 
     dimensions: {
-      height: 15, // cm
-      diameter: 7, // cm
+      height: 15, 
+      diameter: 7, 
     },
     modelPath: '/assets/models/spoon_mopsig.glb',
     insideModelPath: '/assets/models/spoon_mopsig_inside.glb',
     volumeMap: [
-      { volume: 0, height: 0 },    // Empty
-      { volume: 0.1, height: 0.3 }, // 10% volume = 30% height (narrow bottom)
-      { volume: 0.3, height: 0.5 }, // 30% volume = 50% height
-      { volume: 0.6, height: 0.7 }, // 60% volume = 70% height (wide middle)
-      { volume: 1.0, height: 1.0 }  // Full
+      { volume: 0, height: 0 },   
+      { volume: 0.1, height: 0.3 },
+      { volume: 0.3, height: 0.5 }, 
+      { volume: 0.6, height: 0.7 }, 
+      { volume: 1.0, height: 1.0 }  
     ]
   },
   mopsig_teaspoon: {
     id: 'mopsig_teaspoon',
     containerType: 'glass',
     name: 'Mopsig Teaspoon',
-    maxVolume: 100, // ml
-    maxMarbles: 0, // count
+    maxVolume: 100, 
+    maxMarbles: 0, 
     dimensions: {
-      height: 15, // cm
-      diameter: 7, // cm
+      height: 15, 
+      diameter: 7, 
     },
     modelPath: '/assets/models/teaspoon_mopsig.glb',
     insideModelPath: '/assets/models/teaspoon_mopsig_inside.glb',
     volumeMap: [
-      { volume: 0, height: 0 },    // Empty
-      { volume: 0.1, height: 0.3 }, // 10% volume = 30% height (narrow bottom)
-      { volume: 0.3, height: 0.5 }, // 30% volume = 50% height
-      { volume: 0.6, height: 0.7 }, // 60% volume = 70% height (wide middle)
-      { volume: 1.0, height: 1.0 }  // Full
+      { volume: 0, height: 0 },    
+      { volume: 0.1, height: 0.3 }, 
+      { volume: 0.3, height: 0.5 }, 
+      { volume: 0.6, height: 0.7 }, 
+      { volume: 1.0, height: 1.0 }  
     ]
   }
-
-}; 
+};

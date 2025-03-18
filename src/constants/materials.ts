@@ -26,4 +26,4 @@ export const MATERIALS: Record<string, Material> = {
     density: 0, // g/ml
     color: '#808080',
   },
-}; 
+};
