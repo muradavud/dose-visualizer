@@ -1,19 +1,20 @@
-export type ContainerType = 'glass' | 'spoon';
+export type ContainerType = 'glass';
 
 export interface Container {
   id: string;
   containerType: ContainerType;
   name: string;
-  maxVolume: number; // ml
-  maxMarbles?: number; // count
+  maxVolume: number;
+  maxMarbles?: number;
   dimensions: {
-    height: number; // cm
-    diameter: number; // cm
-  };
+    height: number; 
+    diameter: number; 
+  } | null;
   modelPath: string;
   insideModelPath: string;
+  fullAt: number; // Percentage at which container is considered full (e.g., 0.95 for 95%)
   volumeMap: Array<{
-    volume: number;  // ratio 0-1
-    height: number;  // ratio 0-1
+    volume: number;  
+    height: number;  
   }>;
 }

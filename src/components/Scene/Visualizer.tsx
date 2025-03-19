@@ -46,9 +46,6 @@ export function Visualizer({ container, material, amount, showBanana = false }: 
             />
           </Suspense>
         );
-      case 'spoon':
-        // return <Spoon material={material} amount={amount} />;
-        return null;
       default:
         console.warn(`Unknown container type: ${container.containerType}`);
         return null;

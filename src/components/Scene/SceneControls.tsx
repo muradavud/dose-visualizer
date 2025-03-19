@@ -1,6 +1,7 @@
 import type { Amount, Container, Material } from '@/types';
 import { adjustValue } from '@/utils/calculations';
 import { convertUnits } from '@/utils/conversions';
+import { useState } from 'react';
 import { AmountInput } from '../ui/AmountInput';
 import { ContainerSelect } from '../ui/ContainerSelect';
 import { MaterialSelect } from '../ui/MaterialSelect';
@@ -40,6 +41,9 @@ export function SceneControls({
   onAmountChange,
   onToggleBanana,
 }: SceneControlsProps) {
+  // State for unit system preference
+  const [useMetric, setUseMetric] = useState(true);
+  
   // Handle container changes
   const handleContainerChange = (newContainer: Container) => {
     // Adjust the current amount to ensure it doesn't exceed the new container's capacity
@@ -81,6 +85,7 @@ export function SceneControls({
           <ContainerSelect 
             value={container} 
             onChange={handleContainerChange}
+            useMetric={useMetric}
           />
         </div>
         <div className="bg-white/30 backdrop-blur-sm rounded-lg p-1 shadow-lg flex-1 max-w-[45vw]" style={{minWidth: "140px"}}>
@@ -88,6 +93,26 @@ export function SceneControls({
             value={material} 
             onChange={handleMaterialChange} 
           />
+        </div>
+      </div>
+      
+      {/* Unit system toggle - upper left below container */}
+      <div className="fixed top-24 left-4 z-50">
+        <div className="flex flex-col bg-white/30 backdrop-blur-sm rounded-md p-1 shadow-sm">
+          <button 
+            className={`w-10 h-8 text-xs font-medium rounded-t-md flex items-center justify-center ${useMetric ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+            onClick={() => setUseMetric(true)}
+            aria-label="Use metric units"
+          >
+            mL
+          </button>
+          <button 
+            className={`w-10 h-8 text-xs font-medium rounded-b-md flex items-center justify-center ${!useMetric ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+            onClick={() => setUseMetric(false)}
+            aria-label="Use imperial units"
+          >
+            oz
+          </button>
         </div>
       </div>
       
@@ -107,7 +132,7 @@ export function SceneControls({
       </div>
       
       {/* Bottom: Amount input */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[95vw]">
         <div className="bg-white/30 backdrop-blur-sm rounded-lg p-2 shadow-lg">
           <AmountInput 
             value={amount} 

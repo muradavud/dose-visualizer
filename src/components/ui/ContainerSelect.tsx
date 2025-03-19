@@ -4,9 +4,15 @@ import { Container, ContainerType } from '@/types';
 interface ContainerSelectProps {
   value: Container;
   onChange: (container: Container) => void;
+  useMetric?: boolean;
 }
 
-export function ContainerSelect({ value, onChange }: ContainerSelectProps) {
+export function ContainerSelect({ value, onChange, useMetric = true }: ContainerSelectProps) {
+  // Convert milliliters to fluid ounces
+  const mlToFlOz = (ml: number) => {
+    return (ml / 29.57).toFixed(1);
+  };
+
   return (
     <div className="flex-1">
       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -19,7 +25,9 @@ export function ContainerSelect({ value, onChange }: ContainerSelectProps) {
       >
         {Object.values(CONTAINERS).map((container) => (
           <option key={container.id} value={container.id} className="text-gray-900">
-            {container.name}
+            {container.name} ({useMetric 
+              ? `${container.maxVolume} mL` 
+              : `${mlToFlOz(container.maxVolume)} fl oz`})
           </option>
         ))}
       </select>

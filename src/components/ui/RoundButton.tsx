@@ -27,7 +27,7 @@ export function RoundButton({
     
   return (
     <button 
-      className={`w-10 h-10 p-2 rounded-full border shadow-lg transition-colors 
+      className={`w-12 h-12 p-3 rounded-full border shadow-lg transition-colors 
         ${isActive 
           ? activeBackgroundColor
           : 'bg-white border-gray-300 hover:bg-gray-100 active:bg-gray-200'} 

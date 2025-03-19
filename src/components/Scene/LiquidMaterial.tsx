@@ -53,24 +53,21 @@ export function LiquidMaterial({ material, amount, container }: LiquidMaterialPr
         // Create a new object with the same geometry but our shader material
         const liquidMesh = new THREE.Mesh(child.geometry, shaderMaterial);
         
-        // Copy the rotation and scale from the original mesh
-        liquidMesh.rotation.copy(child.rotation);
-        liquidMesh.scale.copy(child.scale);
-        
-        // Set position
-        liquidMesh.position.copy(child.position);
         liquidMesh.position.y += 0.00005; // Small offset to prevent z-fighting
         
         // Compute bounds for the shader
         child.geometry.computeBoundingBox();
         const bounds = child.geometry.boundingBox;
         shaderMaterial.uniforms.modelMinY.value = bounds.min.y;
-        shaderMaterial.uniforms.modelMaxY.value = bounds.max.y;
+        
+        // Adjust the max Y value to represent the percentage specified by fullAt
+        const modelHeight = bounds.max.y - bounds.min.y;
+        shaderMaterial.uniforms.modelMaxY.value = bounds.min.y + (modelHeight * container.fullAt);
         
         setLiquidObject(liquidMesh);
       }
     });
-  }, [insideModel, shaderMaterial]);
+  }, [container.fullAt, insideModel, shaderMaterial]);
 
   if (!liquidObject) {
     return null;
