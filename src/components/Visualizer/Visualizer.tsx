@@ -1,8 +1,8 @@
+import { Container as ContainerComponent } from '@/components/Visualizer/Container';
 import type { Amount, Container, Material } from '@/types';
 import { useGLTF } from '@react-three/drei';
 import { Suspense } from 'react';
 import { LoadingIndicator } from '../ui/LoadingIndicator';
-import { Container as ContainerComponent } from './Container';
 
 interface VisualizerProps {
   container: Container;

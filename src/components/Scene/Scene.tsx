@@ -1,39 +1,25 @@
 'use client';
 
+import { LoadingFallback } from '@/components/ui/LoadingFallback';
+import { Visualizer } from '@/components/Visualizer';
 import { DEFAULT_MATERIAL, MATERIALS } from '@/constants';
 import { CONTAINERS, DEFAULT_CONTAINER } from '@/constants/containers';
 import { UNITS } from '@/constants/units';
 import type { Amount, Container, Material } from '@/types';
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState } from 'react';
-import { LoadingFallback } from '../ui/LoadingFallback';
 import { CameraController } from './CameraController';
 import { SceneControls } from './SceneControls';
-import { Visualizer } from './Visualizer';
 
-interface SceneProps {
-  // Optional initial values
-  initialContainer?: Container;
-  initialMaterial?: Material;
-  initialAmount?: Amount;
-  initialShowBanana?: boolean;
-}
-
-export function Scene({ 
-  initialContainer,
-  initialMaterial,
-  initialAmount,
-  initialShowBanana = false
-}: SceneProps = {}) {
-  // Internal state management
-  const [container, setContainer] = useState<Container>(initialContainer || CONTAINERS[DEFAULT_CONTAINER]);
-  const [material, setMaterial] = useState<Material>(initialMaterial || MATERIALS[DEFAULT_MATERIAL]);
-  const [amount, setAmount] = useState<Amount>(initialAmount || {
+export function Scene() {
+  const [container, setContainer] = useState<Container>(CONTAINERS[DEFAULT_CONTAINER]);
+  const [material, setMaterial] = useState<Material>(MATERIALS[DEFAULT_MATERIAL]);
+  const [amount, setAmount] = useState<Amount>({
     value: 0,
     unit: UNITS.MILLILITER
   });
-  const [showBanana, setShowBanana] = useState(initialShowBanana);
-  
+  const [showBanana, setShowBanana] = useState(false);
+
   // Handle scene-specific view controls
   const handleResetView = () => {
     const canvas = document.querySelector('canvas');
@@ -42,16 +28,16 @@ export function Scene({
       canvas.dispatchEvent(event);
     }
   };
-  
+
   // Toggle banana visibility
   const handleToggleBanana = () => {
     setShowBanana(!showBanana);
   };
-  
+
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       {/* Scene Controls UI */}
-      <SceneControls 
+      <SceneControls
         onResetView={handleResetView}
         container={container}
         material={material}
@@ -62,7 +48,7 @@ export function Scene({
         onAmountChange={setAmount}
         onToggleBanana={handleToggleBanana}
       />
-      
+
       <Canvas
         camera={{
           position: [-0.4, 0.3, 0.3],
@@ -72,11 +58,11 @@ export function Scene({
       >
         <color attach="background" args={['#f0f4f8']} />
         <fog attach="fog" args={['#f0f4f8', 5, 20]} />
-        
+
         <ambientLight intensity={1} />
-        <directionalLight 
-          intensity={4} 
-          position={[10, 10, 30]} 
+        <directionalLight
+          intensity={4}
+          position={[10, 10, 30]}
         />
 
         <Suspense fallback={<LoadingFallback />}>
