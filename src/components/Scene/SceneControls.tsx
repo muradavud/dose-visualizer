@@ -1,4 +1,5 @@
 import type { Amount, Container, Material } from '@/types';
+import { adjustValue } from '@/utils/calculations';
 import { convertUnits } from '@/utils/conversions';
 import { useState } from 'react';
 import { AmountInput } from '../ui/AmountInput';
@@ -46,15 +47,15 @@ export function SceneControls({
   // Handle container changes
   const handleContainerChange = (newContainer: Container) => {
     // Adjust the current amount to ensure it doesn't exceed the new container's capacity
-    // const adjustedAmount = adjustValue(amount, material, newContainer);
-    onAmountChange(amount);
+    const adjustedAmount = adjustValue(amount, material, newContainer);
+    onAmountChange(adjustedAmount);
     onContainerChange(newContainer);
   };
 
   // Handle material changes
   const handleMaterialChange = (newMaterial: Material) => {
-    // const adjustedAmount = adjustValue(amount, newMaterial, container);
-    onAmountChange(amount);
+    const adjustedAmount = adjustValue(amount, newMaterial, container);
+    onAmountChange(adjustedAmount);
     onMaterialChange(newMaterial);
   };
 
@@ -73,8 +74,8 @@ export function SceneControls({
     console.log(newAmount);
     
     // Adjust the amount to ensure it doesn't exceed container capacity
-    // const adjustedAmount = adjustValue(newAmount, material, container);
-    onAmountChange(newAmount);
+    const adjustedAmount = adjustValue(newAmount, material, container);
+    onAmountChange(adjustedAmount);
   };
 
   return (

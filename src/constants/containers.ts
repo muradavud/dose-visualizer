@@ -6,7 +6,7 @@ export const CONTAINERS: Record<string, Container> = {
     containerType: 'glass',
     name: 'Ikea Pokal Glass',
     maxVolume: 350, // ml
-    maxMarbles: 120, // count
+    maxMarbles: 140, // count
     dimensions: {
       height: 14, // cm
       diameter: 9.5, // cm
@@ -62,7 +62,7 @@ export const CONTAINERS: Record<string, Container> = {
     containerType: 'glass',
     name: 'Ikea Vardagen Glass',
     maxVolume: 430,
-    maxMarbles: 120,
+    maxMarbles: 150,
     dimensions: {
       height: 13,
       diameter: 9.5,
