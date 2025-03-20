@@ -72,7 +72,7 @@ export function Scene() {
           />
         </Suspense>
 
-        <CameraController />
+        <CameraController container={container} />
       </Canvas>
     </div>
   );
