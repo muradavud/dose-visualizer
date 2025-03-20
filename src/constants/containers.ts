@@ -1,7 +1,5 @@
 import { Container } from '@/types';
 
-export const DEFAULT_CONTAINER = 'pokal_12oz';
-
 export const CONTAINERS: Record<string, Container> = {
   pokal_12oz: {
     id: 'pokal_12oz',

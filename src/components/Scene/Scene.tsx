@@ -2,9 +2,9 @@
 
 import { LoadingFallback } from '@/components/ui/LoadingFallback';
 import { Visualizer } from '@/components/Visualizer';
-import { DEFAULT_MATERIAL, MATERIALS } from '@/constants';
-import { CONTAINERS, DEFAULT_CONTAINER } from '@/constants/containers';
-import { UNITS } from '@/constants/units';
+import { CONTAINERS } from '@/constants/containers';
+import { DEFAULT_AMOUNT, DEFAULT_CONTAINER, DEFAULT_MATERIAL } from '@/constants/default';
+import { MATERIALS } from '@/constants/materials';
 import type { Amount, Container, Material } from '@/types';
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState } from 'react';
@@ -14,10 +14,7 @@ import { SceneControls } from './SceneControls';
 export function Scene() {
   const [container, setContainer] = useState<Container>(CONTAINERS[DEFAULT_CONTAINER]);
   const [material, setMaterial] = useState<Material>(MATERIALS[DEFAULT_MATERIAL]);
-  const [amount, setAmount] = useState<Amount>({
-    value: 0,
-    unit: UNITS.MILLILITER
-  });
+  const [amount, setAmount] = useState<Amount>(DEFAULT_AMOUNT);
   const [showBanana, setShowBanana] = useState(false);
 
   // Handle scene-specific view controls

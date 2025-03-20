@@ -1,7 +1,5 @@
 import { Material } from '@/types';
 
-export const DEFAULT_MATERIAL = 'water';
-
 export const MATERIALS: Record<string, Material> = {
   water: {
     id: 'water',
