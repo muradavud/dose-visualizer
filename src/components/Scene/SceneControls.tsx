@@ -80,15 +80,15 @@ export function SceneControls({
   return (
     <>
       {/* Top controls: Container and Material selectors - centered */}
-      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 justify-center w-[95vw]">
-        <div className="bg-white/30 backdrop-blur-sm rounded-lg p-1 shadow-lg flex-1 max-w-[45vw]" style={{minWidth: "140px"}}>
+      <div className="fixed top-4 left-4 right-4 z-50 flex gap-2">
+        <div className="bg-white/30 backdrop-blur-sm rounded-lg p-1 shadow-lg w-1/2">
           <ContainerSelect 
             value={container} 
             onChange={handleContainerChange}
             useMetric={useMetric}
           />
         </div>
-        <div className="bg-white/30 backdrop-blur-sm rounded-lg p-1 shadow-lg flex-1 max-w-[45vw]" style={{minWidth: "140px"}}>
+        <div className="bg-white/30 backdrop-blur-sm rounded-lg p-1 shadow-lg w-1/2">
           <MaterialSelect 
             value={material} 
             onChange={handleMaterialChange} 
@@ -97,7 +97,7 @@ export function SceneControls({
       </div>
       
       {/* Unit system toggle - upper left below container */}
-      <div className="fixed top-24 left-4 z-50">
+      <div className="fixed top-26 left-4 z-50">
         <div className="flex flex-col bg-white/30 backdrop-blur-sm rounded-md p-1 shadow-sm">
           <button 
             className={`w-10 h-8 text-xs font-medium rounded-t-md flex items-center justify-center ${useMetric ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
@@ -117,7 +117,7 @@ export function SceneControls({
       </div>
       
       {/* Right side: Reset and Banana buttons */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+      <div className="fixed right-4 top-26 z-50 flex flex-col gap-2">
         <RoundButton
           variant="camera"
           onClick={onResetView}
@@ -132,7 +132,7 @@ export function SceneControls({
       </div>
       
       {/* Bottom: Amount input */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[95vw]">
+      <div className="fixed bottom-4 left-4 right-4 z-50">
         <div className="bg-white/30 backdrop-blur-sm rounded-lg p-2 shadow-lg">
           <AmountInput 
             value={amount} 
