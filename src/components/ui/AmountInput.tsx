@@ -6,12 +6,12 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 
 interface AmountInputProps {
-  value: Amount;
+  amount: Amount;
   onChange: (amount: Amount) => void;
   material: Material;
 }
 
-export function AmountInput({ value, onChange, material }: AmountInputProps) {
+export function AmountInput({ amount, onChange, material }: AmountInputProps) {
   const [showDualInput, setShowDualInput] = useState(false);
   const shouldUseCountUnits = useMemo(() => isDiscreteMaterial(material), [material]);
 
@@ -27,14 +27,14 @@ export function AmountInput({ value, onChange, material }: AmountInputProps) {
   }, [shouldUseCountUnits]);
 
   // Format the displayed value with appropriate decimal places from the unit
-  const displayValue = value.unit.type === 'count' 
-    ? Math.round(value.value) 
-    : roundToDecimalPlaces(value.value, value.unit.decimalPlaces);
+  const displayValue = amount.unit.type === 'count' 
+    ? Math.round(amount.value) 
+    : roundToDecimalPlaces(amount.value, amount.unit.decimalPlaces);
 
   // For the secondary input (when showing dual input)
   const [secondaryUnit, setSecondaryUnit] = useState(() => {
     // Default to a different unit type than the primary if possible
-    const primaryType = value.unit.type;
+    const primaryType = amount.unit.type;
     if (primaryType === 'volume' && !shouldUseCountUnits) {
       const massUnits = getUnitsByType('mass');
       return massUnits[0];
@@ -43,7 +43,7 @@ export function AmountInput({ value, onChange, material }: AmountInputProps) {
       return volumeUnits[0];
     } else {
       // Fallback or for count units
-      return availableUnits.find(u => u.id !== value.unit.id) || value.unit;
+      return availableUnits.find(u => u.id !== amount.unit.id) || amount.unit;
     }
   });
 
@@ -51,20 +51,20 @@ export function AmountInput({ value, onChange, material }: AmountInputProps) {
   const secondaryValue = useMemo(() => {
     try {
       return roundToDecimalPlaces(
-        convertUnits(value.value, value.unit, secondaryUnit, material),
+        convertUnits(amount.value, amount.unit, secondaryUnit, material),
         secondaryUnit.decimalPlaces
       );
     } catch (error) {
       console.error('Error converting units:', error);
       return 0;
     }
-  }, [value.value, value.unit, secondaryUnit, material]);
+  }, [amount.value, amount.unit, secondaryUnit, material]);
 
   const handleSecondaryValueChange = (newValue: number) => {
     try {
       // Convert from secondary to primary
-      const convertedValue = convertUnits(newValue, secondaryUnit, value.unit, material);
-      onChange({ ...value, value: convertedValue });
+      const convertedValue = convertUnits(newValue, secondaryUnit, amount.unit, material);
+      onChange({ ...amount, value: convertedValue });
     } catch (error) {
       console.error('Error converting units:', error);
     }
@@ -89,20 +89,21 @@ export function AmountInput({ value, onChange, material }: AmountInputProps) {
           value={displayValue}
           onChange={(e) => {
             const newValue = Number(e.target.value);
-            onChange({ ...value, value: newValue });
+            onChange({ ...amount, value: newValue });
           }}
+          onFocus={(e) => e.target.select()}
           className="w-[40%] rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
           min="0"
-          step={value.unit.step.toString()}
+          step={amount.unit.step.toString()}
         />
         <div className="flex w-[60%]">
           <select
-            value={value.unit.id}
+            value={amount.unit.id}
             disabled={shouldUseCountUnits}
             onChange={(e) => {
               const selectedUnit = Object.values(UNITS).find(unit => unit.id === e.target.value);
               if (selectedUnit) {
-                onChange({ ...value, unit: selectedUnit });
+                onChange({ ...amount, unit: selectedUnit });
               }
             }}
             className="w-[90%] rounded-l-md border border-gray-300 px-2 py-2 text-gray-900 bg-white"
@@ -140,6 +141,7 @@ export function AmountInput({ value, onChange, material }: AmountInputProps) {
               const newValue = Number(e.target.value);
               handleSecondaryValueChange(newValue);
             }}
+            onFocus={(e) => e.target.select()}
             className="w-[40%] rounded-md border border-gray-300 px-3 py-2 text-gray-900 bg-white"
             min="0"
             step={secondaryUnit.step.toString()}

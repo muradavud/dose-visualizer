@@ -28,22 +28,6 @@ export function Container({ material, amount, container }: GlassProps) {
       if (child instanceof THREE.Mesh) {
         // Create a new mesh with the same geometry but our material
         mesh = new THREE.Mesh(child.geometry, simpleMaterial);
-        
-        mesh.rotation.copy(child.rotation);
-        mesh.scale.copy(child.scale);
-        mesh.position.copy(child.position);
-        
-        // Disable shadows
-        mesh.castShadow = false;
-        mesh.receiveShadow = false;
-        
-        // Log glass bounds for debugging
-        child.geometry.computeBoundingBox();
-        const bounds = child.geometry.boundingBox;
-        console.log('Glass model bounds:', {
-          min: bounds.min,
-          max: bounds.max
-        });
       }
     });
     return mesh;

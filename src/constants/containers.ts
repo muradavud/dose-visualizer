@@ -8,8 +8,8 @@ export const CONTAINERS: Record<string, Container> = {
     maxVolume: 350, // ml
     maxMarbles: 120, // count
     dimensions: {
-      height: 15, // cm
-      diameter: 7, // cm
+      height: 14, // cm
+      diameter: 9.5, // cm
     },
     modelPath: '/assets/models/glass_pokal_12oz.glb',
     insideModelPath: '/assets/models/glass_pokal_12oz_inside.glb',
@@ -64,8 +64,8 @@ export const CONTAINERS: Record<string, Container> = {
     maxVolume: 430,
     maxMarbles: 120,
     dimensions: {
-      height: 15,
-      diameter: 7,
+      height: 13,
+      diameter: 9.5,
     },
     modelPath: '/assets/models/glass_vardagen_15oz.glb',
     insideModelPath: '/assets/models/glass_vardagen_15oz_inside.glb',
@@ -119,7 +119,10 @@ export const CONTAINERS: Record<string, Container> = {
     name: 'Tablespoon',
     maxVolume: 15,
     maxMarbles: 0,
-    dimensions: null,
+    dimensions: {
+      height: 3.5,
+      diameter: 1.5,
+    },
     modelPath: '/assets/models/spoon_mopsig.glb',
     insideModelPath: '/assets/models/spoon_mopsig_inside.glb',
     fullAt: 0.95, // Container is visually full at 100% height
@@ -172,7 +175,10 @@ export const CONTAINERS: Record<string, Container> = {
     name: 'Teaspoon',
     maxVolume: 5,
     maxMarbles: 0,
-    dimensions: null,
+    dimensions: {
+      height: 3.5,
+      diameter: 1.5,
+    },
     modelPath: '/assets/models/teaspoon_mopsig.glb',
     insideModelPath: '/assets/models/teaspoon_mopsig_inside.glb',
     fullAt: 0.95, // Container is visually full at 100% height

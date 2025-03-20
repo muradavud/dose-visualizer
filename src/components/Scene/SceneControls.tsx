@@ -1,5 +1,4 @@
 import type { Amount, Container, Material } from '@/types';
-import { adjustValue } from '@/utils/calculations';
 import { convertUnits } from '@/utils/conversions';
 import { useState } from 'react';
 import { AmountInput } from '../ui/AmountInput';
@@ -47,15 +46,15 @@ export function SceneControls({
   // Handle container changes
   const handleContainerChange = (newContainer: Container) => {
     // Adjust the current amount to ensure it doesn't exceed the new container's capacity
-    const adjustedAmount = adjustValue(amount, material, newContainer);
-    onAmountChange(adjustedAmount);
+    // const adjustedAmount = adjustValue(amount, material, newContainer);
+    onAmountChange(amount);
     onContainerChange(newContainer);
   };
 
   // Handle material changes
   const handleMaterialChange = (newMaterial: Material) => {
-    const adjustedAmount = adjustValue(amount, newMaterial, container);
-    onAmountChange(adjustedAmount);
+    // const adjustedAmount = adjustValue(amount, newMaterial, container);
+    onAmountChange(amount);
     onMaterialChange(newMaterial);
   };
 
@@ -71,10 +70,11 @@ export function SceneControls({
         console.error('Error converting units:', error);
       }
     }
+    console.log(newAmount);
     
     // Adjust the amount to ensure it doesn't exceed container capacity
-    const adjustedAmount = adjustValue(newAmount, material, container);
-    onAmountChange(adjustedAmount);
+    // const adjustedAmount = adjustValue(newAmount, material, container);
+    onAmountChange(newAmount);
   };
 
   return (
@@ -135,7 +135,7 @@ export function SceneControls({
       <div className="fixed bottom-4 left-4 right-4 z-50">
         <div className="bg-white/30 backdrop-blur-sm rounded-lg p-2 shadow-lg">
           <AmountInput 
-            value={amount} 
+            amount={amount} 
             onChange={handleAmountChange} 
             material={material} 
           />

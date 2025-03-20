@@ -1,32 +1,21 @@
-import { UNITS } from '@/constants/units';
 import type { Amount, Container, Material } from '@/types';
 import { isDiscreteMaterial } from '@/types/material';
-import { convertUnits } from './conversions';
 
 
 export function adjustValue(amount: Amount, material: Material, container: Container): Amount {
   let maxValue: number;
   
   if (isDiscreteMaterial(material)) {
+    // For discrete materials like marbles, still limit to max capacity
     maxValue = container.maxMarbles || 0;
+    return {
+      value: Math.min(amount.value, maxValue),
+      unit: amount.unit
+    };
   } else {
-    // For liquids
-    if (amount.unit.type === 'volume') {
-      // Convert maxVolume (in mL) to the current volume unit
-      maxValue = convertUnits(container.maxVolume, UNITS.MILLILITER, amount.unit, material);
-    } else if (amount.unit.type === 'mass') {
-      // Convert maxVolume to grams using density, then to the current mass unit
-      const maxMassInGrams = container.maxVolume * material.density;
-      maxValue = convertUnits(maxMassInGrams, UNITS.GRAM, amount.unit, material);
-    } else {
-      maxValue = container.maxVolume;
-    }
+    // For non-discrete materials (liquids), don't limit to max capacity
+    return amount;
   }
-  
-  return {
-    value: Math.min(amount.value, maxValue),
-    unit: amount.unit
-  };
 }
 
 export function getHeightForVolume(volumeRatio: number, container: Container): number {

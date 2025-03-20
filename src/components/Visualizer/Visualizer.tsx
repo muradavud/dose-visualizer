@@ -1,7 +1,10 @@
 import { Container as ContainerComponent } from '@/components/Visualizer/Container';
-import type { Amount, Container, Material } from '@/types';
+import { OverflowIndicator } from '@/components/ui/OverflowIndicator';
+import { UNITS } from '@/constants/units';
+import { isDiscreteMaterial, type Amount, type Container, type Material } from '@/types';
+import { convertUnits } from '@/utils/conversions';
 import { useGLTF } from '@react-three/drei';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import { LoadingIndicator } from '../ui/LoadingIndicator';
 
 interface VisualizerProps {
@@ -34,6 +37,26 @@ function Banana() {
 }
 
 export function Visualizer({ container, material, amount, showBanana = false }: VisualizerProps) {
+  // Calculate the amount to display in the container (capped at max capacity)
+  const displayAmount = useMemo(() => {
+    // For non-discrete materials, cap the display amount at container max
+    if (material.type !== 'marbles') {
+      const amountInMl = convertUnits(amount.value, amount.unit, UNITS.MILLILITER, material);
+      const maxValue = container.maxVolume;
+      
+      if (amountInMl > maxValue) {
+        const displayValue = amountInMl % maxValue || maxValue; // Show full container if exactly divisible
+        return {
+          value: convertUnits(displayValue, UNITS.MILLILITER, amount.unit, material),
+          unit: amount.unit
+        };
+      }
+      return amount;
+    }
+    
+    return amount;
+  }, [amount, container.maxVolume, material]);
+
   const renderVisualization = () => {
     switch (container.containerType) {
       case 'glass':
@@ -42,8 +65,16 @@ export function Visualizer({ container, material, amount, showBanana = false }: 
             <ContainerComponent 
               container={container}
               material={material}
-              amount={amount}
+              amount={displayAmount}
             />
+            {/* Only show overflow indicator for non-discrete materials */}
+            {!isDiscreteMaterial(material) && (
+              <OverflowIndicator
+                amount={amount}
+                container={container}
+                material={material}
+              />
+            )}
           </Suspense>
         );
       default:
