@@ -39,7 +39,7 @@ export function OverflowIndicator({ amount, container, material }: OverflowIndic
           className="bg-white/40 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-blue-500/80 min-w-[120px] flex flex-col items-center cursor-pointer"
           onClick={() => setExpanded(false)}
         >
-          <div className="text-2xl font-bold text-center text-red-400">
+          <div className="text-2xl font-bold text-center text-red-400 whitespace-nowrap">
             {containerCount} X
           </div>
           <div className="text-2xl font-bold text-center text-blue-500">
