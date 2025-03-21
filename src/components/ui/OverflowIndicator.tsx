@@ -39,8 +39,8 @@ export function OverflowIndicator({ amount, container, material }: OverflowIndic
           className="bg-white/40 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-blue-500/80 min-w-[120px] flex flex-col items-center cursor-pointer"
           onClick={() => setExpanded(false)}
         >
-          <div className="text-2xl font-bold text-center text-blue-700">
-            {containerCount}X 
+          <div className="text-2xl font-bold text-center text-red-400">
+            {containerCount} X
           </div>
           <div className="text-2xl font-bold text-center text-blue-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

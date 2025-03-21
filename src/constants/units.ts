@@ -13,6 +13,16 @@ export const UNITS = {
     step: 0.1
   },
   
+  LITER: {
+    id: 'l',
+    name: 'Liter',
+    type: 'volume' as UnitType,
+    conversionFactor: 1000,
+    symbol: 'L',
+    decimalPlaces: 3,
+    step: 0.001
+  },
+
   TEASPOON: {
     id: 'tsp',
     name: 'Teaspoon',
@@ -82,6 +92,7 @@ export const UNITS = {
     decimalPlaces: 4,
     step: 0.001
   },
+  
   
   // Mass units (base: gram)
   GRAM: {

@@ -13,7 +13,7 @@ export const CONTAINERS: Record<string, Container> = {
     },
     modelPath: '/assets/models/glass_pokal_12oz.glb',
     insideModelPath: '/assets/models/glass_pokal_12oz_inside.glb',
-    fullAt: 0.99, // Container is visually full at 100% height
+    fullAt: 0.99,
     volumeMap: [
       {
         "volume": 0.0,
@@ -69,7 +69,7 @@ export const CONTAINERS: Record<string, Container> = {
     },
     modelPath: '/assets/models/glass_vardagen_15oz.glb',
     insideModelPath: '/assets/models/glass_vardagen_15oz_inside.glb',
-    fullAt: 0.99, // Container is visually full at 100% height
+    fullAt: 0.99,
     volumeMap: [
       {
         "volume": 0.0,
@@ -125,7 +125,7 @@ export const CONTAINERS: Record<string, Container> = {
     },
     modelPath: '/assets/models/spoon_mopsig.glb',
     insideModelPath: '/assets/models/spoon_mopsig_inside.glb',
-    fullAt: 0.95, // Container is visually full at 100% height
+    fullAt: 0.95,
     volumeMap: [
       {
         "volume": 0.0,
@@ -181,7 +181,7 @@ export const CONTAINERS: Record<string, Container> = {
     },
     modelPath: '/assets/models/teaspoon_mopsig.glb',
     insideModelPath: '/assets/models/teaspoon_mopsig_inside.glb',
-    fullAt: 0.95, // Container is visually full at 100% height
+    fullAt: 0.95, 
     volumeMap: [
       {
         "volume": 0.0,
